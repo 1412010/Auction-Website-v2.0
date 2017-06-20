@@ -1,0 +1,77 @@
+{{#section 'title'}}
+    Danh sách sản phẩm
+{{/section}}
+
+{{#section 'js'}}
+    <script type="text/javascript">
+        $('.addItem').on('click', function () {
+            var proId = $(this).data('id');
+            $('#txtP').val(proId);
+            $('#frmAddToCart').submit();
+        });
+    </script>
+{{/section}}
+
+{{#if isEmpty }}
+    Không có sản phẩm!
+{{else}}
+    <form id="frmAddToCart" method="post" action="/cart/add1">
+        <input type="hidden" id="txtP" name="proId" />
+        <input type="hidden" id="txtC" name="catId" value="{{catId}}" />
+    </form>
+    <div class="row">
+        {{#each products }}
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <img src="/Imgs/sp/{{ProID}}/main_thumbs.jpg" title="{{ProName}}" />
+                <div class="caption">
+                    <h4>{{ProName}}</h4>
+                    <h4>Giá: {{formatNumber Price}}</h4>
+                    <h4>Tồn: {{Quantity}}</h4>
+                    <p>{{TinyDes}}</p>
+                    <p>
+                        <a href="/product/detail/{{ProID}}" class="btn btn-default" role="button">
+                            Chi tiết
+                        </a>
+                        {{#if ../layoutModels.isLogged }}
+                            <a href="javascript:;" class="btn btn-success addItem" role="button" data-id="{{ProID}}">
+                                <i class="fa fa-cart-plus"></i>
+                                Đặt mua
+                            </a>
+                        {{/if}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {{#if showPrevPage}}
+                <li>
+                    <a href="?page={{prevPage}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {{/if}}
+            {{#each pages }}
+                {{#if isActive }}
+                    <li class="active">
+                        <a href="?page={{pageValue}}">{{pageValue}}</a>
+                    </li>
+                {{else}}
+                    <li>
+                        <a href="?page={{pageValue}}">{{pageValue}}</a>
+                    </li>
+                {{/if}}
+            {{/each}}
+            {{#if showNextPage }}
+                <li>
+                    <a href="?page={{nextPage}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {{/if}}
+        </ul>
+    </nav>
+{{/if}}

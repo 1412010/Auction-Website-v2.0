@@ -1,0 +1,62 @@
+{{#section 'title'}}
+    Chi tiết sản phẩm
+{{/section}}
+
+{{#section 'css'}}
+    <link href="/assets/site.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .padding {
+            padding-top: 8px;
+        }
+    </style>
+{{/section}}
+
+{{#section 'js'}}
+    <script src="/assets/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script type="text/javascript">
+        $('#txtQ').TouchSpin({
+            min: 1,
+            max: 50,
+            verticalButtons: true
+        });
+    </script>
+{{/section}}
+
+{{#with product }}
+    <div class="row">
+        <div class="col-md-12">
+            <img src="/Imgs/sp/{{ProID}}/main.jpg" />
+        </div>
+        <div class="col-md-12 caption-lg-orange">
+            <h3>{{ProName}}</h3>
+        </div>
+        <div class="col-md-12 padding">
+            <span class="caption-lg-red">Giá bán: {{formatNumber Price}}</span>
+        </div>
+        <div class="col-md-12 padding">
+            Tồn kho: {{Quantity}}
+        </div>
+        <div class="col-md-12 padding">
+            {{{FullDes}}}
+        </div>
+    </div>
+
+    {{#if ../layoutModels.isLogged }}
+        <form class="form-horizontal" id="frmAddItem" method="post" action="/cart/add">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <input type="hidden" id="txtP" name="proId" value="{{ProID}}" />
+                    <div class="input-group" style="margin-left: 24px;">
+                        <input id="txtQ" name="quantity" type="text" class="form-control" placeholder="Slg" value="1">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-cart-plus"></i>
+                            </button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </form>
+    {{/if}}
+{{/with}}

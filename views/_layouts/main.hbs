@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bán hàng - nodejs</title>
+        <link rel="stylesheet" type="text/css" href="/assets/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/font-awesome-4.3.0/css/font-awesome.min.css">
+    {{{_sections.css}}}
+</head>
+<body>
+    {{> header this }}
+    <form id="frmLogout" method="post" action="/account/logout"></form>
+    <div class="container-fluid" style="width: 85%; max-width: none!important; margin-right: auto; margin-left: auto;">
+        <div class="row">
+            <!-- Panel left -->
+            <div class="col-md-3">
+                <div class="panel panel-default" style="border-color: #189eff;">
+                    <div class="panel-heading" style="background-color: #189eff;">
+                        <span class="panel-title">Danh mục</span>
+                    </div>
+                    {{> categories this }}
+                </div>
+                <div class="panel panel-default" style="border-color: #189eff;">
+                    <div class="panel-heading" style="background-color: #189eff;">
+                        <span class="panel-title">Từ khóa phổ biến</span>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">Iphone 7</a>
+                        <a href="#" class="list-group-item">Laptop</a>
+                        <a href="#" class="list-group-item">Tai nghe bluetooth</a>
+                        <a href="#" class="list-group-item">Oppo</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Panel left -->
+
+            {{{body}}}
+        </div>
+         <footer>
+            <p>&copy; {{now}} - nodejs</p>
+        </footer>
+    </div>  
+    <script type="text/javascript" src="/assets/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $('#logoutLink').on('click', function () {
+            $('#frmLogout').submit();
+        });
+    </script>
+    {{{_sections.js}}}
+</body>
+</html>

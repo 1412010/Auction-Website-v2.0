@@ -1,0 +1,109 @@
+{{#section 'title'}}
+	Giỏ hàng
+{{/section}}
+
+{{#section 'css'}}
+	<link href="/assets/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+{{/section}}
+
+{{#section 'js'}}
+	<script src="/assets/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script type="text/javascript">
+
+        $('.quantity').TouchSpin({
+            min: 1,
+            verticalbuttons: true
+        });
+
+        $('.removeItem').on('click', function () {
+            var proId = $(this).data('proid');
+            $('#txtRemoveId').val(proId);
+
+            $('#frmRemoveItem').submit();
+        });
+
+        $('.updateItem').on('click', function () {
+            var proId = $(this).data('proid');
+            var quantity = $('#txtQ_' + proId).val();
+
+            $('#txtUpdateId').val(proId);
+            $('#txtUpdateQ').val(quantity);
+
+            $('#frmUpdateItem').submit();
+        });
+    </script>
+{{/section}}
+
+{{#if isEmpty }}
+	<div class="row">
+		<div class="col-md-12">
+			Không có dữ liệu
+		</div>
+	</div>
+{{else}}
+	<form method="post" id="frmRemoveItem" action="/cart/remove">
+		<input id="txtRemoveId" type="hidden" name="proId" />
+	</form>
+	<form method="post" id="frmUpdateItem" action="/cart/update">
+		<input id="txtUpdateId" type="hidden" name="proId" />
+		<input id="txtUpdateQ" type="hidden" name="quantity" />
+	</form>
+
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="col-sm-4">Sản phẩm</th>
+						<th class="col-sm-2">Giá</th>
+						<th class="col-sm-2">Số lượng</th>
+						<th class="col-sm-2">Thành tiền</th>
+						<th class="col-sm-2">&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each items }}
+						<tr>
+							<td>{{product.ProName}}</td>
+							<td>{{formatNumber product.Price}}</td>
+							{{!-- <td>{{quantity}}</td> --}}
+							<td><input type="text" value="{{quantity}}" class="quantity" id="txtQ_{{product.ProID}}" /></td>
+							<td>{{formatNumber amount}}</td>
+							<td class="text-right">
+								<a class="btn btn-danger btn-xs removeItem" href="javascript:;" role="button" title="Xoá" data-proid="{{product.ProID}}">
+									<i class="fa fa-remove"></i>
+								</a>
+								<a class="btn btn-primary btn-xs updateItem" href="javascript:;" role="button" title="Cập nhật" data-proid="{{product.ProID}}">
+									<i class="fa fa-check"></i>
+								</a>
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+				<tfoot>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td><h4>Total:</h4></td>
+					<td class="text-danger" colspan="2">
+						<h4>{{formatNumber total}}</h4>
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+	<form method="post" id="frmCheckout" action="/cart/checkout">
+		<div class="row">
+			<div class="col-md-12">
+				<a class="btn btn-success" href="/home" role="button">
+					<i class="fa fa-mail-reply"></i> Tiếp tục mua hàng
+				</a>
+				<input type="hidden" name="total" value="{{total}}">
+				<button type="submit" class="btn btn-danger">
+				<i class="fa fa-check"></i> Thanh toán
+				</button>
+			</div>
+		</div>
+	</form>
+{{/if}}

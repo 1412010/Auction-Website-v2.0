@@ -1,6 +1,5 @@
 {{#section 'title'}} Đăng ký {{/section}} 
 {{#section 'css'}}
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
     <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
@@ -137,13 +136,14 @@ $('#frmRegister').validate({
 });
 </script>
 {{/section}} 
-{{#if showError }}
-<div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <strong>Warning!</strong> {{ errorMsg }}
-</div>
-{{/if}}
+
 <div class="col-md-9">
+    {{#if showError }}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Warning!</strong> {{ errorMsg }}
+    </div>
+    {{/if}}
     <div class="panel panel-default" style="border-color: #189eff;">
         <div class="panel-heading" style="background-color: #189eff;">
             <span class="panel-title">Đăng ký</span>

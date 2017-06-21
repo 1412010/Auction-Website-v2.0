@@ -21,8 +21,8 @@ module.exports = function(req, res, next) {
         res.locals.layoutModels = {
             categories: catList,
             isLogged: req.session.isLogged,
-            curUser: req.session.user,
-            cartSumQ: cart.sumQ(req.session.cart)
+            account: req.session.account,
+            //cartSumQ: cart.sumQ(req.session.cart)
         };
 
         next();

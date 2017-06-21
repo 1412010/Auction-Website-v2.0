@@ -26,21 +26,25 @@ exports.login = function(entity) {
 
     var sql =
         mustache.render(
-            'select * from users where f_Username = "{{username}}" and f_Password = "{{password}}"',
+            'select * from taikhoan where email = "{{email}}" and matkhau = "{{password}}"',
             entity
         );
 
     db.load(sql).then(function(rows) {
         if (rows.length > 0) {
-            var user = {
-                id: rows[0].f_ID,
-                username: rows[0].f_Username,
-                name: rows[0].f_Name,
-                email: rows[0].f_Email,
-                dob: rows[0].f_DOB,
-                permission: rows[0].f_Permission
+            console.log(rows[0].diemcong);
+            var account = {
+                id: rows[0].id,
+                //username: rows[0].f_Username,
+                name: rows[0].ten,
+                email: rows[0].email,
+                dob: rows[0].ngaysinh,
+                permission: rows[0].quyenhan,
+                gender: rows[0].gioitinh,
+                positivepoint: rows[0].diemcong,
+                negativepoint: rows[0].diemtru,
             }
-            deferred.resolve(user);
+            deferred.resolve(account);
         } else {
             deferred.resolve(null);
         }

@@ -11,7 +11,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-8" style="display:flex;align-items:center;">
+            <div class="col-md-7" style="display:flex;align-items:center;">
                 <!-- Khung search -->
                 <!--<form class="form-inline" style="display:table-cell;text-align:center;vertical-align:middle;">-->
                 <div class="input-group col-md-11">
@@ -47,7 +47,25 @@
                 <!--</form>-->
             </div>
             <!-- /Khung search -->
-            <div class="col-md-2" style="display:flex;align-items:center;">
+            <div class="col-md-3" style="display:flex;align-items:center;padding-left: 3%;">
+                {{#if layoutModels.isLogged }}
+
+                 <i class="glyphicon glyphicon-user pull-left" style="font-size: 25px; color: #fff"></i>
+                <div class="dropdown">
+                  <button class="dropbtn">
+                    <span style="height: 25px;">
+                    {{ layoutModels.account.name }}
+                    <br/>
+                    <small>+{{layoutModels.account.positivepoint}}/-{{layoutModels.account.negativepoint}}</small>
+                    </span>
+                  </button>
+                  <div class="dropdown-content">
+                    <a href="/account/profile">Thông tin cá nhân</a>
+                    <a id="logoutLink" href="javascript:;">Thoát</a>
+                    <a href="#">Link 3</a>
+                  </div>
+                </div>
+                {{else}}
                 <button class="btn btn-default col-md-2" data-toggle="modal" data-target="#signinModal" style="border:none;background-color:transparent;">
                     <span class="glyphicon glyphicon-user" style="font-size:150%;color:#fff;"></span>
                     <span style="color:#fff;">Đăng nhập</span>
@@ -62,17 +80,17 @@
                                 <h4 class="modal-title">Đăng nhập</h4>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form method="post" action="/account/login">
                                     <div class="input-group">
                                         <!-- Email -->
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                        <input type="email" class="form-control" id="email" placeholder="Email" required autofocus>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
                                     </div>
                                     <!-- Email -->
                                     <div class="input-group">
                                         <!-- Mật khẩu -->
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                                        <input type="password" class="form-control" id="mk" placeholder="Password" required>
+                                        <input type="password" class="form-control" id="mk" name="password" placeholder="Password" required>
                                     </div>
                                     <!-- Mật khẩu -->
                                     <div class="col-md-offset-1 col-md-11" style="padding-right: 0;">
@@ -81,7 +99,7 @@
                                             <a href="#">Quên mật khẩu?</a>
                                         </div>
                                         <div class="col-md-5" style="padding-right: 0; text-align: right;">
-                                            <a href="signup.html">Đăng ký</a>
+                                            <a href="/account/register">Đăng ký</a>
                                         </div>
                                     </div>
                                     <!-- link -->
@@ -89,11 +107,11 @@
                                     <div class="col-md-offset-4 col-md-8" style="padding-right: 0; text-align: right;">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox">Duy trì đăng nhập</label>
+                                                <input type="checkbox" name="remember">Duy trì đăng nhập</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
-                                        <button type="button" class="btn btn-labeled btn-success" style="width: 49%">
+                                        <button type="submit" class="btn btn-labeled btn-success" style="width: 49%">
                                             <span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>Đăng nhập</button>
                                         <button type="button" class="btn btn-labeled btn-danger" data-dismiss="modal" style="width: 49%">
                                             <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Hủy</button>
@@ -116,6 +134,7 @@
                     </div>
                 </div>
                 <!-- Modal -->
+                {{/if}}
             </div>
         </div>
         <!-- /Khung tiêu đề -->

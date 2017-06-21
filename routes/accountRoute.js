@@ -21,17 +21,17 @@ accountRoute.get('/login', function(req, res) {
 
 accountRoute.post('/login', function(req, res) {
 
-    var ePWD = crypto.createHash('md5').update(req.body.rawPWD).digest('hex');
+    var ePWD = crypto.createHash('md5').update(req.body.password).digest('hex');
     var entity = {
-        username: req.body.username,
+        email: req.body.email,
         password: ePWD,
     };
 
     var remember = req.body.remember ? true : false;
 
     account.login(entity)
-        .then(function(user) {
-            if (user === null) {
+        .then(function(account) {
+            if (account === null) {
                 res.render('account/login', {
                     layoutModels: res.locals.layoutModels,
                     showError: true,
@@ -39,8 +39,8 @@ accountRoute.post('/login', function(req, res) {
                 });
             } else {
                 req.session.isLogged = true;
-                req.session.user = user;
-                req.session.cart = [];
+                req.session.account = account;
+                //req.session.cart = [];
 
                 if (remember === true) {
                     var hour = 1000 * 60 * 60 * 24;
@@ -49,6 +49,7 @@ accountRoute.post('/login', function(req, res) {
                 }
 
                 var url = '/home';
+                console.log(req.query.retUrl);
                 if (req.query.retUrl) {
                     url = req.query.retUrl;
                 }
@@ -59,7 +60,7 @@ accountRoute.post('/login', function(req, res) {
 
 accountRoute.post('/logout', restrict, function(req, res) {
     req.session.isLogged = false;
-    req.session.user = null;
+    req.session.account = null;
     req.session.cart = null;
     req.session.cookie.expires = new Date(Date.now() - 1000);
     res.redirect(req.headers.referer);

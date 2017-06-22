@@ -49,6 +49,29 @@ app.engine('hbs', exphbs({
             });
             return nf.to(n);
         },
+        timeRemain: function(date) {
+            var timeDiff = date.getTime() - moment();
+            var string = "";
+            if(timeDiff > 86400000)
+            {
+                string += Math.floor(timeDiff / 86400000);
+                string += " ngày ";
+                timeDiff = timeDiff % 86400000;
+            }
+            if(timeDiff > 3600000)
+            {
+                string += Math.floor(timeDiff / 3600000);
+                string += " giờ ";
+                timeDiff = timeDiff % 3600000;
+            }
+            if(timeDiff > 60000)
+            {
+                string += Math.floor(timeDiff / 60000);
+                string += " phút";
+            }
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            return string;
+        },
     }
 }));
 app.set('view engine', 'hbs');
@@ -86,7 +109,7 @@ app.use(session({
         port: 3306,
         user: 'root',
         password: '',
-        database: 'qlbh',
+        database: 'qldaugia',
         createDatabaseTable: true,
         schema: {
             tableName: 'sessions',

@@ -59,6 +59,48 @@ exports.loadDetail = function(id) {
     return deferred.promise;
 }
 
+exports.loadTopRaGia = function() {
+    var deferred = Q.defer();
+    var sql = 'select * from sanpham order by solandaugia desc limit 6';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.loadTopGiaCao = function() {
+    var deferred = Q.defer();
+    var sql = 'select * from sanpham order by giahientai desc limit 6';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.loadGanKetThuc = function() {
+    var deferred = Q.defer();
+    var sql = 'select * from sanpham where tgketthuc > now() order by tgketthuc asc limit 6';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
 // exports.makeCartItem = function(id, q) {
 
 //     var deferred = Q.defer();

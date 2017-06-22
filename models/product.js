@@ -14,10 +14,10 @@ exports.loadPageByCat = function(id, limit, offset) {
         offset: offset
     };
 
-    var sqlCount = mustache.render('select count(*) as total from products where CatID = {{id}}', view);
+    var sqlCount = mustache.render('select count(*) as total from sanpham where danhmuc = {{id}}', view);
     promises.push(db.load(sqlCount));
 
-    var sql = mustache.render('select * from products where CatID = {{id}} limit {{limit}} offset {{offset}}', view);
+    var sql = mustache.render('select * from sanpham where danhmuc = {{id}} limit {{limit}} offset {{offset}}', view);
     promises.push(db.load(sql));
 
     Q.all(promises).spread(function(totalRow, rows) {
@@ -35,7 +35,7 @@ exports.loadAllByCat = function(id) {
 
     var deferred = Q.defer();
 
-    var sql = 'select * from products where CatID = ' + id;
+    var sql = 'select * from sanpham where danhmuc = ' + id;
     db.load(sql).then(function(rows) {
         deferred.resolve(rows);
     });
@@ -47,7 +47,7 @@ exports.loadDetail = function(id) {
 
     var deferred = Q.defer();
 
-    var sql = 'select * from products where ProID = ' + id;
+    var sql = 'select * from danhmuc where madaugia = ' + id;
     db.load(sql).then(function(rows) {
         if (rows) {
             deferred.resolve(rows[0]);

@@ -1,49 +1,67 @@
 {{#section 'title'}}
     Đăng nhập
 {{/section}}
-
 {{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
     <style type="text/css">
-        label {
-            font-weight: normal !important;
-        }
+    label {
+        font-weight: normal !important;
+    }
     </style>
 {{/section}}
-
-{{#if showError }}
-    <div class="alert alert-warning alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Warning!</strong> {{ errorMsg }}
-    </div>
-{{/if}}
-
-<form class="form-horizontal" method="post" action="" id="frmLogin">
-    <div class="form-group">
-        <label for="txtUsername" class="col-sm-2 control-label">Tên đăng nhập</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập" name="username">
+<div class="col-md-9">
+    {{#if showError }}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> {{ errorMsg }}
+        </div>
+    {{/if}}
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Đăng nhập</span>
+        </div>
+        <div class="panel-body">
+            <!-- panel body -->
+            <form class="form-horizontal" method="post" action="" id="frmLogin">
+                <div class="form-group">
+                    <label for="txtEmail" class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-5">
+                        <input type="email" class="form-control" id="txtEmail" placeholder="Email" name="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtPWD" class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" id="txtPWD" placeholder="Password" name="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                                        <!-- link -->
+                                        <div class="col-sm-offset-3 col-sm-2" style="text-align: left;">
+                                            <a href="#">Quên mật khẩu?</a>
+                                        </div>
+                                        <div class="col-sm-2" style=" text-align: left;">
+                                            <a href="/account/register">Đăng ký</a>
+                                        </div>
+                                    </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <label>
+                            <input type="checkbox" name="remember"> Duy trì đăng nhập
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check"></i> Đăng nhập
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="form-group">
-        <label for="txtPWD" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-4">
-            <input type="password" class="form-control" id="txtPWD" placeholder="Password" name="rawPWD">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <label>
-                <input type="checkbox" name="remember">
-                Ghi nhớ
-            </label>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success">
-            <i class="fa fa-check"></i>
-            Đăng nhập
-            </button>
-        </div>
-    </div>
-</form>
+</div>

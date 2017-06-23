@@ -4,6 +4,7 @@
 
 {{#section 'css'}}
     <link href="/assets/site.css" rel="stylesheet" />
+    <link href="/assets/bootstrap-3.3.7-dist/js/bootstrap.min.js" rel="stylesheet" />
 
     <style type="text/css">
         .padding {
@@ -23,40 +24,250 @@
     </script>
 {{/section}}
 
-{{#with product }}
-    <div class="row">
-        <div class="col-md-12">
-            <img src="/Imgs/sp/{{ProID}}/main.jpg" />
-        </div>
-        <div class="col-md-12 caption-lg-orange">
-            <h3>{{ProName}}</h3>
-        </div>
-        <div class="col-md-12 padding">
-            <span class="caption-lg-red">Giá bán: {{formatNumber Price}}</span>
-        </div>
-        <div class="col-md-12 padding">
-            Tồn kho: {{Quantity}}
-        </div>
-        <div class="col-md-12 padding">
-            {{{FullDes}}}
-        </div>
-    </div>
-
-    {{#if ../layoutModels.isLogged }}
-        <form class="form-horizontal" id="frmAddItem" method="post" action="/cart/add">
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <input type="hidden" id="txtP" name="proId" value="{{ProID}}" />
-                    <div class="input-group" style="margin-left: 24px;">
-                        <input id="txtQ" name="quantity" type="text" class="form-control" placeholder="Slg" value="1">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fa fa-cart-plus"></i>
-                            </button>
-                        </span>
-                    </div><!-- /input-group -->
+<div class="col-md-9">
+    {{#with product }}
+        <!-- Tên sản phẩm -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                    <!-- -------- -->
+                    <span style="font-size:250%;">{{tensp}}</span>
+                    <!-- -------- -->
                 </div>
             </div>
-        </form>
-    {{/if}}
-{{/with}}
+        <!-- /Tên sản phẩm -->
+        <div class="row">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="col-md-7" style="width: 650px;height: 400px;">
+                <!-- Hình ảnh -->
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" id="wrapper">
+                        <div class="item active">
+                            <img src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg">
+                        </div>
+                        <div class="item">
+                            <img src="/Imgs/sp/{{madaugia}}/1.jpg">
+                        </div>
+                        <div class="item">
+                            <img src="/Imgs/sp/{{madaugia}}/2.jpg">
+                        </div>
+                    </div>
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Thông tin -->
+            <div class="col-md-5" style="border:3px solid;border-color:#1057AF;background-color:#D9EDF7;padding:1.5% 1%;margin-top: 4%;">
+                <div class="row" style="text-align:center;">
+                    <div class="col-md-4">
+                        Số lượt đấu giá
+                        <br>
+                        <span class="numberical-info">{{solandaugia}}</span>
+                    </div>
+                    <div class="col-md-4" style="border-left:2px solid #1057AF;">
+                        Thời gian còn lại
+                        <br>
+                        <span class="numberical-info">{{timeRemain tgketthuc}}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:center;">
+                            <span class="glyphicon glyphicon-star" style="color:yellow;font-size:150%;"></span> &nbsp
+                            <span style="font-weight:bold;">Theo dõi</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="text-align:center;margin-top:5%;">
+                    <div class="col-md-6">
+                        <div class="col-md-12" style="text-align:left;">
+                            Giá hiện tại
+                            <br>
+                            <span class="numberical-info">{{formatNumber giahientai}}</span> VND
+                        </div>
+                        <button class="btn btn-default" style="width:70%;height:7%;margin-top:3%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E;">
+                            <span style="font-weight: bold;color: #fff;">Đấu giá</span>
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12" style="text-align:left;">
+                            Giá mua ngay
+                            <br>
+                            <span class="numberical-info">{{formatNumber giamuangay}}</span> VND
+                        </div>
+                        <button class="btn btn-default" style="width:70%;height:7%;margin-top:3%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E;">
+                            <span style="font-weight: bold;color: #fff;">Mua ngay</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="border-top:2px solid #1057AF;margin-top: 4%;margin-left: 2%;margin-right: 2%;padding-top:5%;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            Người bán:
+                        </div>
+                        <div class="col-md-8">
+                            <!-- ------ -->
+                            <span><a style="text-decoration: none;cursor: pointer;font-weight: bold;font-size: 150%;">{{ten}}</a></span>
+                            <!-- ------ -->
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 1%;">
+                        <div class="col-md-4">
+                            Điểm đánh giá:
+                        </div>
+                        <div class="col-md-8">
+                            <!-- ------ -->
+                            <span class="numberical-info">{{sub diemcong diemtru}}</span>
+                            <!-- ------ -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Hình ảnh sản phẩm -->
+
+        <div class="row" style="margin-top: 1%;">
+            <!-- Thông tin đấu giá -->
+            <div class="col-md-1"></div>
+            <div class="col-md-5" style="border: 2px solid;margin-right: 2px;">
+                <!-- Bảng 1 -->
+                <div class="row odd-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Số lượng
+                    </div>
+                    <div class="col-sm-6">
+                        1
+                    </div>
+                </div>
+                <div class="row even-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Trạng thái
+                    </div>
+                    <div class="col-sm-6">
+                        {{#if trangthai}}
+                            Đã qua sử dụng
+                        {{else}}
+                            Chưa qua sử dụng
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="row odd-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Ngày giờ bắt đầu
+                    </div>
+                    <div class="col-sm-6">
+                        {{shortDateTime tgbatdau}}
+                    </div>
+                </div>
+                <div class="row even-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Ngày giờ kết thúc
+                    </div>
+                    <div class="col-sm-6">
+                        {{shortDateTime tgketthuc}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5" style="border: 2px solid;margin-left: 2px;">
+                <!-- Bảng 2 -->
+                <div class="row odd-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Mã đấu giá
+                    </div>
+                    <div class="col-sm-6">
+                        {{madaugia}}
+                    </div>
+                </div>
+                <div class="row even-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Giá hiện tại
+                    </div>
+                    <div class="col-sm-6">
+                        {{formatNumber giahientai}} VND
+                    </div>
+                </div>
+                <div class="row odd-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Giá mua ngay
+                    </div>
+                    <div class="col-sm-6">
+                        {{formatNumber giamuangay}} VND
+                    </div>
+                </div>
+                <div class="row even-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
+                        Người trả giá cao nhất
+                    </div>
+                    <div class="col-sm-6">
+                        {{nguoitragia}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <!-- /Thông tin đấu giá -->
+
+        <div class="row" style="margin-top: 1%;">
+            <!-- Thông tin sản phẩm -->
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <span style="font-size: 120%;font-weight: bold;">Thông tin sản phẩm</span>
+                <div class="col-md-12" style="border: 1px solid; padding:1%;">
+                    {{{thongtin}}}
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <!-- /Thông tin sản phẩm -->
+
+        <div class="row" style="margin-top: 1%;">
+            <!-- Sản phẩm liên quan -->
+            <div class="panel panel-default" style="border-color:#189eff;;border-width:2;">
+                <div class="panel-heading" style="background-color: #189eff;;color: #fff;font-weight: bold;">
+                    Sản phẩm liên quan
+                </div>
+                <div class="panel-body container" style="">
+                    <div class="row" id="related-product">
+                        <div class="col-md-2">
+                            <a href="#"><img src="..."></a>
+                            <br> Sp1
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#"><img src="..."></a>
+                            <br> Sp2
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#"><img src="..."></a>
+                            <br> Sp3
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#"><img src="..."></a>
+                            <br> Sp4
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#"><img src="..."></a>
+                            <br> Sp5
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#"><img src="..."></a>
+                            <br> Sp6
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Sản phẩm liên quan -->
+    {{/with}}
+</div>

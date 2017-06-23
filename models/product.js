@@ -47,7 +47,7 @@ exports.loadDetail = function(id) {
 
     var deferred = Q.defer();
 
-    var sql = 'select * from danhmuc where madaugia = ' + id;
+    var sql = 'select * from (select * from sanpham, taikhoan where manguoiban = id and madaugia = ' + id + ') as sp left join (select ten as tennguoitragia, sanpham, gia from tragia, taikhoan where nguoitragia = id order by gia desc) as tg on sp.madaugia = tg.sanpham';
     db.load(sql).then(function(rows) {
         if (rows) {
             deferred.resolve(rows[0]);

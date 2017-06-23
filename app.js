@@ -72,6 +72,15 @@ app.engine('hbs', exphbs({
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
             return string;
         },
+        sub: function(i1, i2) {
+            var i = +i1 - +i2;
+            return i;
+        },
+        shortDateTime: function(datetime) {
+            var full = datetime.toString();
+            var dt = full.substring(0, 24);
+            return dt;
+        }
     }
 }));
 app.set('view engine', 'hbs');

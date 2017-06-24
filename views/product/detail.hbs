@@ -24,21 +24,20 @@
     </script>
 {{/section}}
 
-<div class="col-md-9">
+<div class="container col-md-9">
     {{#with product }}
         <!-- Tên sản phẩm -->
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-11">
-                    <!-- -------- -->
-                    <span style="font-size:250%;">{{tensp}}</span>
-                    <!-- -------- -->
-                </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-11">
+                <span style="font-size:250%;text-align:center;">{{tensp}}</span>
             </div>
+        </div>
         <!-- /Tên sản phẩm -->
         <div class="row">
+            <div class="col-md-1"></div>
             <!-- Hình ảnh sản phẩm -->
-            <div class="col-md-7" style="width: 650px;height: 400px;">
+            <div class="col-md-9" style="width: 700px;height: 400px;">
                 <!-- Hình ảnh -->
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
@@ -70,8 +69,14 @@
                     </a>
                 </div>
             </div>
+            <div class="col-md-2"></div>
+            <!-- /Hình ảnh sản phẩm -->
+        </div>
+
+        <div class="row">
             <!-- Thông tin -->
-            <div class="col-md-5" style="border:3px solid;border-color:#1057AF;background-color:#D9EDF7;padding:1.5% 1%;margin-top: 4%;">
+            <div class="col-md-2"></div>
+            <div class="col-md-8" style="border:3px solid;border-color:#1057AF;background-color:#D9EDF7;padding:1.5% 1%;margin-top: 4%;">
                 <div class="row" style="text-align:center;">
                     <div class="col-md-4">
                         Số lượt đấu giá
@@ -84,7 +89,7 @@
                         <span class="numberical-info">{{timeRemain tgketthuc}}</span>
                     </div>
                     <div class="col-md-4">
-                        <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:center;">
+                        <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:right;">
                             <span class="glyphicon glyphicon-star" style="color:yellow;font-size:150%;"></span> &nbsp
                             <span style="font-weight:bold;">Theo dõi</span>
                         </button>
@@ -92,7 +97,8 @@
                 </div>
                 <div class="row" style="text-align:center;margin-top:5%;">
                     <div class="col-md-6">
-                        <div class="col-md-12" style="text-align:left;">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10" style="text-align:left;">
                             Giá hiện tại
                             <br>
                             <span class="numberical-info">{{formatNumber giahientai}}</span> VND
@@ -102,7 +108,8 @@
                         </button>
                     </div>
                     <div class="col-md-6">
-                        <div class="col-md-12" style="text-align:left;">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10" style="text-align:left;">
                             Giá mua ngay
                             <br>
                             <span class="numberical-info">{{formatNumber giamuangay}}</span> VND
@@ -112,36 +119,32 @@
                         </button>
                     </div>
                 </div>
-                <div class="row" style="border-top:2px solid #1057AF;margin-top: 4%;margin-left: 2%;margin-right: 2%;padding-top:5%;">
+                <div class="row" style="border-top:2px solid #1057AF;margin-top: 2%;margin-left: 2%;margin-right: 2%;padding-top:3%;">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             Người bán:
                         </div>
-                        <div class="col-md-8">
-                            <!-- ------ -->
+                        <div class="col-md-9" style="margin-top: -1%;">
                             <span><a style="text-decoration: none;cursor: pointer;font-weight: bold;font-size: 150%;">{{ten}}</a></span>
-                            <!-- ------ -->
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1%;">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             Điểm đánh giá:
                         </div>
-                        <div class="col-md-8">
-                            <!-- ------ -->
+                        <div class="col-md-9" style="margin-top: -1%;">
                             <span class="numberical-info">{{sub diemcong diemtru}}</span>
-                            <!-- ------ -->
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-2"></div>
+            <!-- /Thông tin -->
         </div>
-        <!-- /Hình ảnh sản phẩm -->
 
         <div class="row" style="margin-top: 1%;">
             <!-- Thông tin đấu giá -->
-            <div class="col-md-1"></div>
-            <div class="col-md-5" style="border: 2px solid;margin-right: 2px;">
+            <div class="col-md-6" style="border: 2px solid;">
                 <!-- Bảng 1 -->
                 <div class="row odd-row">
                     <div class="col-sm-6" style="font-weight: bold;">
@@ -180,7 +183,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5" style="border: 2px solid;margin-left: 2px;">
+            <div class="col-md-6" style="border: 2px solid;margin-left: -2px;">
                 <!-- Bảng 2 -->
                 <div class="row odd-row">
                     <div class="col-sm-6" style="font-weight: bold;">
@@ -215,7 +218,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1"></div>
         </div>
         <!-- /Thông tin đấu giá -->
 
@@ -231,43 +233,5 @@
             <div class="col-md-1"></div>
         </div>
         <!-- /Thông tin sản phẩm -->
-
-        <div class="row" style="margin-top: 1%;">
-            <!-- Sản phẩm liên quan -->
-            <div class="panel panel-default" style="border-color:#189eff;;border-width:2;">
-                <div class="panel-heading" style="background-color: #189eff;;color: #fff;font-weight: bold;">
-                    Sản phẩm liên quan
-                </div>
-                <div class="panel-body container" style="">
-                    <div class="row" id="related-product">
-                        <div class="col-md-2">
-                            <a href="#"><img src="..."></a>
-                            <br> Sp1
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#"><img src="..."></a>
-                            <br> Sp2
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#"><img src="..."></a>
-                            <br> Sp3
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#"><img src="..."></a>
-                            <br> Sp4
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#"><img src="..."></a>
-                            <br> Sp5
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#"><img src="..."></a>
-                            <br> Sp6
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /Sản phẩm liên quan -->
     {{/with}}
 </div>

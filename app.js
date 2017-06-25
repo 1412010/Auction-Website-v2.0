@@ -80,6 +80,13 @@ app.engine('hbs', exphbs({
             var full = datetime.toString();
             var dt = full.substring(0, 24);
             return dt;
+        },
+        hideRealUserName: function(name) {
+            if (name != null) {
+                var nameStr = name.toString();
+                var hidden = "***" + nameStr.substring(nameStr.length - 3, nameStr.length);
+                return hidden;
+            }
         }
     }
 }));

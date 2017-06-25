@@ -21,6 +21,13 @@
 	color: #f00;
 }
 
+.numberical-info a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #f00;
+
+}
+
 .numberical-info-small {
 	color: #f00;
 }

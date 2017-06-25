@@ -1,0 +1,56 @@
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript">
+    $(document).ready(function(e) {
+        $('.search-panel .dropdown-menu').find('a').click(function(e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#", "");
+            var concept = $(this).text();
+            $('.search-panel span#search-concept').text(concept);
+            $('.input-group #search-param').val(param);
+        });
+    });
+    </script>
+{{/section}}
+<div class="col-md-9">
+    {{#if showError }}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> {{ errorMsg }}
+        </div>
+    {{/if}}
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Sửa danh mục</span>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" method="post" action="">
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="txtCatID">Mã danh mục</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="txtCatID" placeholder="name" name="catId" value="{{category.id}}" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="txtCatName">Tên danh mục</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="txtCatName" placeholder="name" name="catName" value="{{category.tendanhmuc}}">
+                    </div>
+                </div>
+                <div class="col-sm-offset-8 col-sm-3" style="text-align: right; padding: 0;">
+                    <a href="/manager/category" class="btn btn-default" title="back">
+                        <span class="glyphicon glyphicon-backward"></span>
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-check"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

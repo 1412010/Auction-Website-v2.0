@@ -1,0 +1,68 @@
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript">
+    $(document).ready(function(e) {
+        $('.search-panel .dropdown-menu').find('a').click(function(e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#", "");
+            var concept = $(this).text();
+            $('.search-panel span#search-concept').text(concept);
+            $('.input-group #search-param').val(param);
+        });
+    });
+
+    $('.removeAcc').on('click', function() {
+        var id = $(this).data('id');
+        $('#txtDelAccId').val(id);
+        $('#frmDeleteAcc').submit();
+    });
+    </script>
+{{/section}}
+<div class="col-md-9">
+    {{#if showError }}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> {{ errorMsg }}
+        </div>
+    {{/if}}
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Danh sách tài khoản</span>
+        </div>
+        <div class="panel-body">
+            <form method="post" action="">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Email</th>
+                            <th>Tên</th>
+                            <th>Thời gian xin</th </tr>
+                    </thead>
+                    <tbody>
+                        {{#each listAppro}}
+                            <tr>
+                                <td><input type="checkbox" name="id" value="{{id}}"></td>
+                                <td>{{email}}</td>
+                                <td>{{ten}}</td>
+                                <td>{{thoigianxin}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="glyphicon glyphicon-check"></i> Phê duyệt
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

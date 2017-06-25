@@ -1,0 +1,83 @@
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript">
+    $(document).ready(function(e) {
+        $('.search-panel .dropdown-menu').find('a').click(function(e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#", "");
+            var concept = $(this).text();
+            $('.search-panel span#search-concept').text(concept);
+            $('.input-group #search-param').val(param);
+        });
+    });
+
+    $('.resetAcc').on('click', function() {
+        var id = $(this).data('id');
+        $('#txtResetAccId').val(id);
+        $('#frmResetAcc').submit();
+    });
+
+    $('.removeAcc').on('click', function() {
+        var id = $(this).data('id');
+        $('#txtDelAccId').val(id);
+        $('#frmDeleteAcc').submit();
+    });
+    </script>
+{{/section}}
+<div class="col-md-9">
+    {{#if showError }}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> {{ errorMsg }}
+        </div>
+    {{/if}}
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Danh sách tài khoản</span>
+        </div>
+        <div class="panel-body">
+            <form method="post" action="/manager/account/reset" id="frmResetAcc">
+                <input type="hidden" name="accId" id="txtResetAccId">
+            </form>
+            <form method="post" action="/manager/account/delete" id="frmDeleteAcc">
+                <input type="hidden" name="accId" id="txtDelAccId">
+            </form>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Email</th>
+                        <th>Tên</th>
+                        <th>Điểm cộng</th>
+                        <th>Điểm trừ</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each accounts}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{email}}</td>
+                            <td>{{ten}}</td>
+                            <td>{{diemcong}}</td>
+                            <td>{{diemtru}}</td>
+                            <td>
+                                <a href="javascript:;" class="btn btn-xs btn-primary resetAcc" data-id="{{id}}" title="reset">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                </a>
+                                <a href="javascript:;" class="btn btn-xs btn-danger removeAcc" data-id="{{id}}">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

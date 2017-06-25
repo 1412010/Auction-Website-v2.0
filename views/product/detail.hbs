@@ -133,7 +133,7 @@
                             Điểm đánh giá:
                         </div>
                         <div class="col-md-9" style="margin-top: -1%;">
-                            <span class="numberical-info">{{sub diemcong diemtru}}</span>
+                            <span class="numberical-info"><a href="#">{{sub diemcong diemtru}}</a></span>
                         </div>
                     </div>
                 </div>
@@ -148,10 +148,10 @@
                 <!-- Bảng 1 -->
                 <div class="row odd-row">
                     <div class="col-sm-6" style="font-weight: bold;">
-                        Số lượng
+                        Mã đấu giá
                     </div>
                     <div class="col-sm-6">
-                        1
+                        {{madaugia}}
                     </div>
                 </div>
                 <div class="row even-row">
@@ -187,21 +187,13 @@
                 <!-- Bảng 2 -->
                 <div class="row odd-row">
                     <div class="col-sm-6" style="font-weight: bold;">
-                        Mã đấu giá
-                    </div>
-                    <div class="col-sm-6">
-                        {{madaugia}}
-                    </div>
-                </div>
-                <div class="row even-row">
-                    <div class="col-sm-6" style="font-weight: bold;">
                         Giá hiện tại
                     </div>
                     <div class="col-sm-6">
                         {{formatNumber giahientai}} VND
                     </div>
                 </div>
-                <div class="row odd-row">
+                <div class="row even-row">
                     <div class="col-sm-6" style="font-weight: bold;">
                         Giá mua ngay
                     </div>
@@ -209,12 +201,12 @@
                         {{formatNumber giamuangay}} VND
                     </div>
                 </div>
-                <div class="row even-row">
+                <div class="row odd-row">
                     <div class="col-sm-6" style="font-weight: bold;">
                         Người trả giá cao nhất
                     </div>
                     <div class="col-sm-6">
-                        {{nguoitragia}}
+                        {{hideRealUserName tennguoitragia}}
                     </div>
                 </div>
             </div>

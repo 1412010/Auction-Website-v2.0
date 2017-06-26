@@ -1,71 +1,70 @@
-    <!-- <div id="fb-root"></div> -->
-    <!-- Header -->
-    <div class="container-fluid" style="width: 85%; max-width: none!important; margin-right: auto; margin-left: auto;">
-        <div class="row" style="display:flex; background: #189eff;padding-top: 4%;padding-bottom: 3%;">
-            <!-- Khung tiêu đề -->
-            <div class="col-md-2" style="display:flex;align-items:center;">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <a class="logo" href="index.html">
-                        <img src="images/logo.png" alt="logo">
-                    </a>
-                </div>
+<!-- <div id="fb-root"></div> -->
+<!-- Header -->
+<div class="container-fluid" style="width: 85%; max-width: none!important; margin-right: auto; margin-left: auto;">
+    <div class="row" style="display:flex; background: #189eff;padding-top: 4%;padding-bottom: 3%;">
+        <!-- Khung tiêu đề -->
+        <div class="col-md-2" style="display:flex;align-items:center;">
+            <div class="col-md-4"></div>
+            <div class="col-md-8">
+                <a class="logo" href="index.html">
+                    <img src="images/logo.png" alt="logo">
+                </a>
             </div>
-            <div class="col-md-7" style="display:flex;align-items:center;">
-                <!-- Khung search -->
-                <!--<form class="form-inline" style="display:table-cell;text-align:center;vertical-align:middle;">-->
-                <div class="input-group col-md-11">
-                    <!-- Dropdown -->
-                    <div class="input-group-btn search-panel">
-                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#EDEEF2">
-                            <span id="search-concept">Tất cả</span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#0">Tất cả</a></li>
-                            <li><a href="#1">Dụng cụ thể thao</a></li>
-                            <li><a href="#2">Điện gia dụng - điện lạnh</a></li>
-                            <li><a href="#3">Điện thoại - máy tính bảng</a></li>
-                            <li><a href="#4">Đồng hồ - phụ kiện</a></li>
-                            <li><a href="#5">Laptop - thiết bị IT</a></li>
-                            <li><a href="#6">Máy ảnh - quay phim</a></li>
-                            <li><a href="#7">Phụ kiện - thiết bị số</a></li>
-                            <li><a href="#8">Sách - báo - tạp chí</a></li>
-                            <li><a href="#9">Thời trang</a></li>
-                            <li><a href="#10">Tivi - thiết bị nghe nhìn</a></li>
-                            <li><a href="#11">Truyện tranh - đồ chơi</a></li>
-                        </ul>
-                    </div>
-                    <!-- Textbox search -->
-                    <input type="text" placeholder="Tìm kiếm" class="form-control" />
-                    <input type="hidden" name="search-param" value="0" id="search-param">
-                    <span class="input-group-btn">
+        </div>
+        <div class="col-md-7" style="display:flex;align-items:center;">
+            <!-- Khung search -->
+            <!--<form class="form-inline" style="display:table-cell;text-align:center;vertical-align:middle;">-->
+            <div class="input-group col-md-11">
+                <!-- Dropdown -->
+                <div class="input-group-btn search-panel">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#EDEEF2">
+                        <span id="search-concept">Tất cả</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#0">Tất cả</a></li>
+                        <li><a href="#1">Dụng cụ thể thao</a></li>
+                        <li><a href="#2">Điện gia dụng - điện lạnh</a></li>
+                        <li><a href="#3">Điện thoại - máy tính bảng</a></li>
+                        <li><a href="#4">Đồng hồ - phụ kiện</a></li>
+                        <li><a href="#5">Laptop - thiết bị IT</a></li>
+                        <li><a href="#6">Máy ảnh - quay phim</a></li>
+                        <li><a href="#7">Phụ kiện - thiết bị số</a></li>
+                        <li><a href="#8">Sách - báo - tạp chí</a></li>
+                        <li><a href="#9">Thời trang</a></li>
+                        <li><a href="#10">Tivi - thiết bị nghe nhìn</a></li>
+                        <li><a href="#11">Truyện tranh - đồ chơi</a></li>
+                    </ul>
+                </div>
+                <!-- Textbox search -->
+                <input type="text" placeholder="Tìm kiếm" class="form-control" />
+                <input type="hidden" name="search-param" value="0" id="search-param">
+                <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                    </span>
-                </div>
-                <!--</form>-->
+                </button>
+                </span>
             </div>
-            <!-- /Khung search -->
-            <div class="col-md-3" style="display:flex;align-items:center;padding-left: 3%;">
-                {{#if layoutModels.isLogged }}
-
-                 <i class="glyphicon glyphicon-user pull-left" style="font-size: 25px; color: #fff"></i>
+            <!--</form>-->
+        </div>
+        <!-- /Khung search -->
+        <div class="col-md-3" style="display:flex;align-items:center;padding-left: 3%;">
+            {{#if layoutModels.isLogged }}
+                <i class="glyphicon glyphicon-user pull-left" style="font-size: 25px; color: #fff"></i>
                 <div class="dropdown">
-                  <button class="dropbtn">
-                    <span style="height: 25px;">
+                    <button class="dropbtn">
+                        <span style="height: 25px;">
                     {{ layoutModels.account.name }}
                     <br/>
                     <small>+{{layoutModels.account.positivepoint}}/-{{layoutModels.account.negativepoint}}</small>
                     </span>
-                  </button>
-                  <div class="dropdown-content">
-                    <a href="/account/profile">Thông tin cá nhân</a>
-                    <a id="logoutLink" href="javascript:;">Thoát</a>
-                    <a href="#">Link 3</a>
-                  </div>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="/account/profile">Thông tin cá nhân</a>
+                        <a id="logoutLink" href="javascript:;">Thoát</a>
+                        <a href="#">Link 3</a>
+                    </div>
                 </div>
-                {{else}}
+            {{else}}
                 <button class="btn btn-default col-md-2" data-toggle="modal" data-target="#signinModal" style="border:none;background-color:transparent;">
                     <span class="glyphicon glyphicon-user" style="font-size:150%;color:#fff;"></span>
                     <span style="color:#fff;">Đăng nhập</span>
@@ -134,25 +133,19 @@
                     </div>
                 </div>
                 <!-- Modal -->
-                {{/if}}
-            </div>
-        </div>
-        <!-- /Khung tiêu đề -->
-        <div id="nav" class="row navbar" style="background: #1d71ab;padding-top:1%;padding-bottom:1%;">
-            <!-- Navigation bar -->
-            <ul style="list-style:none;text-align:center;">
-                <li style="width:10%;"><a>Trang chủ</a></li>
-                <li style="width:10%;"><a>Hot deal</a></li>
-                <li style="width:20%;"><a>Sản phẩm đang theo dõi</a></li>
-                <li style="width:10%;"><a>Đăng bán</a></li>
-            </ul>
-        </div>
-        <!-- /Navigation bar -->
-        <div class="row container-fluid">
-            <ol class="breadcrumb breadcrumb-arrow">
-                <li><a href="index.html">Trang chủ</a></li>
-                <li class="active"><span>Đăng ký</span></li>
-            </ol>
-            <!-- /Đường dẫn -->
+            {{/if}}
         </div>
     </div>
+    <!-- /Khung tiêu đề -->
+    <div id="nav" class="row navbar" style="background: #1d71ab;padding-top:1%;padding-bottom:1%;">
+        <!-- Navigation bar -->
+        <ul style="list-style:none;text-align:center;">
+            <li style="width:10%;"><a href="/home">Trang chủ</a></li>
+            <li style="width:10%;"><a>Hot deal</a></li>
+            <li style="width:20%;"><a>Sản phẩm đang theo dõi</a></li>
+            <li style="width:10%;"><a>Đăng bán</a></li>
+        </ul>
+    </div>
+    <!-- /Navigation bar -->
+    {{{_sections.breadcrumbs}}}
+</div>

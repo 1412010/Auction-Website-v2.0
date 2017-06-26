@@ -21,6 +21,55 @@ exports.insert = function(entity) {
     return deferred.promise;
 }
 
+exports.updateInfo = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('UPDATE taikhoan SET ten = "{{name}}", ngaysinh="{{dob}}", gioitinh={{gender}} WHERE id={{id}}', entity);
+    db.update(sql).then(function(result) {
+        if (result > 0) {
+            var sql_2 = mustache.render('SELECT * FROM taikhoan WHERE id={{id}}', entity);
+            db.load(sql_2).then(function(rows) {
+                var account = {
+                    id: rows[0].id,
+                    //username: rows[0].f_Username,
+                    name: rows[0].ten,
+                    email: rows[0].email,
+                    dob: rows[0].ngaysinh,
+                    permission: rows[0].quyenhan,
+                    gender: rows[0].gioitinh,
+                    positivepoint: rows[0].diemcong,
+                    negativepoint: rows[0].diemtru,
+                }
+                deferred.resolve(account);
+            });
+        } else {
+            deferred.resolve(null);
+        }
+    });
+    return deferred.promise;
+}
+
+exports.updatePassword = function(pw) {
+    var deferred = Q.defer();
+    var sql = mustache.render('SELECT * FROM taikhoan WHERE id={{id}}', pw);
+    db.load(sql).then(function(rows) {
+        if (pw.oldPW == rows[0].matkhau)
+        {
+            var sql2 = mustache.render('UPDATE taikhoan SET matkhau="{{newPW}}" WHERE id={{id}}', pw);
+            db.update(sql2).then(function(result) {
+                if (result > 0) {
+                    deferred.resolve(1);
+                } else {
+                    deferred.resolve(0);
+                }
+            });
+        } else {
+            deferred.resolve(0);
+        }
+    });
+    return deferred.promise;
+}
+
 exports.login = function(entity) {
 
     var deferred = Q.defer();

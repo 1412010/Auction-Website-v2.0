@@ -5,18 +5,19 @@
     <link href="/assets/css/docs.css" rel="stylesheet">
 {{/section}}
 {{#section 'js'}}
-    <script type="text/javascript">
-    $(document).ready(function(e) {
-        $('.search-panel .dropdown-menu').find('a').click(function(e) {
-            e.preventDefault();
-            var param = $(this).attr("href").replace("#", "");
-            var concept = $(this).text();
-            $('.search-panel span#search-concept').text(concept);
-            $('.input-group #search-param').val(param);
-        });
-    });
-    </script>
+
 {{/section}}
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/manager/category">Quản trị danh mục</a></li>
+            <li class="active"><span>Thêm danh mục</span></li>
+        </ol>
+        <!-- /Đường dẫn -->
+    </div>
+{{/section}}
+{{> managerPanel this}}
 <div class="col-md-9">
     {{#if showError }}
         <div class="alert alert-warning alert-dismissible" role="alert">

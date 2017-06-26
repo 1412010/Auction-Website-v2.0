@@ -19,6 +19,7 @@ accountRoute.get('/login', function(req, res) {
     }
 });
 
+//2
 accountRoute.post('/login', function(req, res) {
 
     var ePWD = crypto.createHash('md5').update(req.body.password).digest('hex');
@@ -38,6 +39,7 @@ accountRoute.post('/login', function(req, res) {
                     errorMsg: 'Thông tin đăng nhập không đúng.'
                 });
             } else {
+                account.dob = moment(account.dob, 'YYYY-MM-DD HH:mm').format('DD-MM-YYYY');
                 req.session.isLogged = true;
                 req.session.account = account;
                 //req.session.cart = [];
@@ -49,7 +51,7 @@ accountRoute.post('/login', function(req, res) {
                 }
 
                 var url = '/home';
-                console.log(req.query.retUrl);
+                //console.log(req.query.retUrl);
                 if (req.query.retUrl) {
                     url = req.query.retUrl;
                 }
@@ -99,9 +101,68 @@ accountRoute.post('/register', function(req, res) {
         });
 });
 
+//Thay đổi thông tin người dùng
+accountRoute.post('/profile', function(req, res) {
+    var dateOB = moment(req.body.dob, 'DD-MM-YYYY').format('YYYY-MM-DD');
+    console.log(dateOB);
+    var entity = {
+        id: req.body.id,
+        name: req.body.name,
+        gender: req.body.gender,
+        dob: dateOB
+    };
+
+    account.updateInfo(entity).then(function(account) {
+        res.locals.layoutModels.account = account;
+        req.session.account = account;
+        console.log(account);
+        res.render('account/profile', {
+            layoutModels: res.locals.layoutModels,
+            showError: true,
+            errorMsg: 'Cập nhật thông tin thành công'
+        });
+    });
+});
+
 accountRoute.get('/profile', restrict, function(req, res) {
     res.render('account/profile', {
         layoutModels: res.locals.layoutModels
+    });
+});
+
+accountRoute.get('/changePassword', restrict, function(req, res) {
+    res.render('account/changePassword', {
+        layoutModels: res.locals.layoutModels
+    });
+});
+
+accountRoute.post('/changePassword', restrict, function(req, res) {
+    var crytoOldPW = crypto.createHash('md5').update(req.body.oldPW).digest('hex');
+    var crytoNewPW = crypto.createHash('md5').update(req.body.newPW).digest('hex');
+    var crytoRenewPW = crypto.createHash('md5').update(req.body.renewPW).digest('hex');
+    console.log(crytoOldPW);
+    console.log(crytoNewPW);
+    console.log(crytoRenewPW);
+    var pw = {
+        id: res.locals.layoutModels.account.id,
+        oldPW: crytoOldPW,
+        newPW: crytoNewPW
+    };
+    account.updatePassword(pw).then(function(result) {
+        if (result == 1) {
+            res.render('account/changePassword', {
+                layoutModels: res.locals.layoutModels,
+                successMsg: true,
+                errorMsg: 'Mật khẩu đã được thay đổi thành công.'
+            });
+        } else {
+            res.render('account/changePassword', {
+                layoutModels: res.locals.layoutModels,
+                failMsg: true,
+                errorMsg: 'Mật khẩu cũ không khớp. Vui lòng nhập lại'
+            });
+        }
+
     });
 });
 

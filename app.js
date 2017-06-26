@@ -22,6 +22,7 @@ var homeRoute = require('./routes/homeRoute');
 var productRoute = require('./routes/productRoute');
 var accountRoute = require('./routes/accountRoute');
 var cartRoute = require('./routes/cartRoute');
+var managerRoute = require('./routes/managerRoute');
 
 var app = express();
 
@@ -146,9 +147,10 @@ app.use('/home', homeRoute);
 app.use('/product', productRoute);
 app.use('/account', accountRoute);
 app.use('/cart', cartRoute);
+app.use('/manager', managerRoute);
 
 app.get('/', function(req, res) {
-    res.end('Welcome to my homepage!');
+    res.redirect('/home');
 });
 
 app.get('/about', function(req, res) {

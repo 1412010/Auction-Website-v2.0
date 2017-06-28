@@ -43,11 +43,46 @@ exports.loadAllByCat = function(id) {
     return deferred.promise;
 }
 
-exports.loadDetail = function(id) {
+exports.loadDetail = function(id, isLoggedin, accId) {
 
     var deferred = Q.defer();
 
+    var promises = [];
+
     var sql = 'select * from (select * from sanpham, taikhoan where manguoiban = id and madaugia = ' + id + ') as sp left join (select ten as tennguoitragia, sanpham, gia from tragia, taikhoan where nguoitragia = id order by gia desc) as tg on sp.madaugia = tg.sanpham';
+    if (!isLoggedin) {
+        db.load(sql).then(function(rows) {
+            if (rows) {
+                deferred.resolve(rows[0]);
+            } else {
+                deferred.resolve(null);
+            }
+        });
+    }
+    else {
+        var sqlWatching = 'select * from theodoi where nguoitheodoi = ' + accId + ' and sanpham = ' + id;
+
+        promises.push(db.load(sql));
+        promises.push(db.load(sqlWatching));
+
+        Q.all(promises).spread(function(product, wtchng) {
+            var theodoi = 'Theo dõi';
+            if (wtchng.length > 0)
+                theodoi = 'Bỏ theo dõi';
+            var data = {
+                pro: product[0],
+                watching: theodoi
+            }
+            deferred.resolve(data);
+        });
+    }
+
+    return deferred.promise;
+}
+
+exports.loadProductbyId = function(id) {
+    var deferred = Q.defer();
+    var sql = 'select * from sanpham where madaugia = ' + id;
     db.load(sql).then(function(rows) {
         if (rows) {
             deferred.resolve(rows[0]);
@@ -96,6 +131,46 @@ exports.loadGanKetThuc = function() {
         } else {
             deferred.resolve(null);
         }
+    });
+
+    return deferred.promise;
+}
+
+exports.insertTheoDoi = function(idnguoitheodoi, idsanpham) {
+    var deferred = Q.defer();
+    var sql = 'insert into theodoi values("' + idnguoitheodoi + '", "' + idsanpham + '")';
+    db.insert(sql).then(function(insertId) {
+        deferred.resolve(insertId);
+    });
+
+    return deferred.promise;
+}
+
+exports.insertTraGia = function(idnguoitragia, idsanpham, entity) {
+    var deferred = Q.defer();
+
+    var currentdate = new Date(); 
+    var datetime = + currentdate.getFullYear() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getDate() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+    var sql = mustache.render('insert into tragia values("' + idnguoitragia + '", "' + idsanpham + '", "{{giaphaitra}}", "' + datetime + '")', entity);
+    db.insert(sql).then(function(insertId) {
+        deferred.resolve(insertId);
+    });
+
+    return deferred.promise;
+}
+
+exports.updateGiaHienTai = function(idsanpham, entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('update sanpham set giahientai = {{giaphaitra}} where madaugia = ' + idsanpham, entity);
+    db.update(sql).then(function(changedRows) {
+        deferred.resolve(changedRows);
     });
 
     return deferred.promise;

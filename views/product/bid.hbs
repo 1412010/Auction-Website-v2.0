@@ -1,0 +1,166 @@
+{{#section 'title'}}
+    Trả giá
+{{/section}}
+
+{{#section 'css'}}
+    <link href="/assets/site.css" rel="stylesheet" />
+    <link href="/assets/bootstrap-3.3.7-dist/js/bootstrap.min.js" rel="stylesheet" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <script type="text/javascript" src="assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <link href="/assets/css/docs.css" rel="stylesheet">
+
+    <style type="text/css">
+        .btn-account i {
+            margin-top: 2%;
+            font-size: 30px;
+        }
+        
+        .btn-account span {
+            padding-left: 15px;
+            padding-right: 5px;
+            width: 100%;
+            display: inline-block;
+            text-align: left;
+            font-size: 130%;
+        }
+        
+        .btn-account span small {
+            width: 100%;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+{{/section}}
+
+{{#section 'js'}}
+    <script src="/assets/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script type="text/javascript">
+
+        var step;
+
+        function getTouchSpinValues(stp, min) {
+            step = stp;
+            $( "#datgia" ).trigger("touchspin.updatesettings", {min: min, step: stp});
+        }
+
+        $(function(){
+            $('div[onload]').trigger('onload');
+        });
+
+        $('#datgia').TouchSpin({
+            max: 999999999999,
+            verticalButtons: true
+        });
+           
+        $('#datgia').on('touchspin.on.startspin', function () {
+            document.getElementById("giaphaitra").value = document.getElementById("datgia").value;
+        });
+
+    </script>
+{{/section}}
+
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid" style="background: #f4f4f4;">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="#">Sản phẩm</a></li>
+            <li class="active"><span>Trả giá</span></li>
+        </ol>
+    </div>
+{{/section}}
+
+{{> accountPanel}}
+
+<div style="background: #f4f4f4;" onload="getTouchSpinValues({{product.buocgia}}, {{add product.giahientai product.buocgia}})">
+    <div class="container-fluid" style="width: 85%; max-width: none!important; margin-right: auto; margin-left: auto;">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-default" style="border-color: #189eff;">
+                    <div class="panel-heading" style="background-color: #189eff; color:#fff">
+                        <span style="font-size: 150%;">{{product.tensp}}</span>
+                    </div>
+                    <div class="panel-body">
+                        <!-- panel body -->
+                        <div class="col-sm-8">
+                            <form class="form-horizontal">
+                                <!-- form -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5">Giá hiện tại:</label>
+                                    <div class="col-sm-7">
+                                        <label class="control-label"><span style="font-size: 150%;color: #f00;">{{formatNumber product.giahientai}}</span> vnd</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5">Giá mua ngay:</label>
+                                    <div class="col-sm-7">
+                                        <label class="control-label"><span style="font-size: 150%;color: #f00;">{{formatNumber product.giamuangay}}</span> vnd</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5">Thời gian còn lại:</label>
+                                    <div class="col-sm-7">
+                                        <label class="control-label"><span style="font-size: 150%;color: #f00;">{{timeRemain product.tgketthuc}}</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5">Đặt giá:</label>
+                                    <div class="col-sm-6">
+                                        <input id="datgia" type="text" class="form-control" value="{{add product.giahientai product.buocgia}}">
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- form -->
+                        </div>
+                    </div>
+                    <!-- panel body -->
+                    <div class="panel-footer">
+                        <div class="col-sm-offset-2" style="display:flex;">
+                            <button type="submit" class="btn btn-success" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmModal">Đặt giá</button>
+
+                            <!-- Modal -->
+                            <div id="confirmModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-sm">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Xác nhận</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="/product/bid/{{product.madaugia}}">
+                                                <div class="input-group" style="font-size:150%;">
+                                                    Trả giá 
+                                                    <input type="text" id="giaphaitra" name="giaphaitra" value="{{add product.giahientai product.buocgia}}" disabled>
+                                                     VND
+                                                     <br>
+                                                     cho sản phẩm này?
+                                                </div>
+                                                <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                                                    <button type="submit" class="btn btn-labeled btn-success" style="width: 49%">
+                                                        <span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>Tiếp tục</button>
+                                                    <button type="button" class="btn btn-labeled btn-danger" data-dismiss="modal" style="width: 49%">
+                                                        <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span> Hủy</button>
+                                                </div>
+                                                
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+
+                            <form method="post" action="/product/buynow/{{product.madaugia}}">
+                                <button type="submit" class="btn btn-success" style="margin-right: 10px;">Mua ngay</button>
+                            </form>
+                            <form method="get" action="/product/detail/{{product.madaugia}}">
+                                <button type="submit" class="btn btn-default">Thoát</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

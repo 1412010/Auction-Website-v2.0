@@ -4,7 +4,9 @@
 
 {{#section 'css'}}
     <link href="/assets/site.css" rel="stylesheet" />
-    <link href="/assets/bootstrap-3.3.7-dist/js/bootstrap.min.js" rel="stylesheet" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
 
     <style type="text/css">
         .padding {
@@ -14,23 +16,27 @@
 {{/section}}
 
 {{#section 'js'}}
-    <script src="/assets/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-    <script type="text/javascript">
-        $('#txtQ').TouchSpin({
-            min: 1,
-            max: 50,
-            verticalButtons: true
-        });
-    </script>
 {{/section}}
 
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="#">Tìm kiếm</a></li>
+            <li class="active"><span>Chi tiết sản phẩm</span></li>
+        </ol>
+    </div>
+{{/section}}
+
+{{> categoriesPanel}}
+
 <div class="container col-md-9">
-    {{#with product }}
+    
         <!-- Tên sản phẩm -->
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-11">
-                <span style="font-size:250%;text-align:center;">{{tensp}}</span>
+                <span style="font-size:250%;text-align:center;">{{product.tensp}}</span>
             </div>
         </div>
         <!-- /Tên sản phẩm -->
@@ -49,13 +55,13 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" id="wrapper">
                         <div class="item active">
-                            <img src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg">
+                            <img src="/Imgs/sp/{{product.madaugia}}/main_thumbs.jpg">
                         </div>
                         <div class="item">
-                            <img src="/Imgs/sp/{{madaugia}}/1.jpg">
+                            <img src="/Imgs/sp/{{product.madaugia}}/1.jpg">
                         </div>
                         <div class="item">
-                            <img src="/Imgs/sp/{{madaugia}}/2.jpg">
+                            <img src="/Imgs/sp/{{product.madaugia}}/2.jpg">
                         </div>
                     </div>
                     <!-- Left and right controls -->
@@ -81,18 +87,22 @@
                     <div class="col-md-4">
                         Số lượt đấu giá
                         <br>
-                        <span class="numberical-info">{{solandaugia}}</span>
+                        <span class="numberical-info">{{product.solandaugia}}</span>
                     </div>
                     <div class="col-md-4" style="border-left:2px solid #1057AF;">
                         Thời gian còn lại
                         <br>
-                        <span class="numberical-info">{{timeRemain tgketthuc}}</span>
+                        <span class="numberical-info">{{timeRemain product.tgketthuc}}</span>
                     </div>
                     <div class="col-md-4">
-                        <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:right;">
-                            <span class="glyphicon glyphicon-star" style="color:yellow;font-size:150%;"></span> &nbsp
-                            <span style="font-weight:bold;">Theo dõi</span>
-                        </button>
+                        <form method="post">
+                            <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:right;">
+                                <span class="glyphicon glyphicon-star" style="color:yellow;font-size:150%;"></span> &nbsp
+                                <span style="font-weight:bold;">
+                                    {{watching}}
+                                </span>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <div class="row" style="text-align:center;margin-top:5%;">
@@ -101,22 +111,26 @@
                         <div class="col-md-10" style="text-align:left;">
                             Giá hiện tại
                             <br>
-                            <span class="numberical-info">{{formatNumber giahientai}}</span> VND
+                            <span class="numberical-info">{{formatNumber product.giahientai}}</span> VND
                         </div>
-                        <button class="btn btn-default" style="width:70%;height:7%;margin-top:3%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E;">
-                            <span style="font-weight: bold;color: #fff;">Đấu giá</span>
-                        </button>
+                        <form action="/product/bid/{{product.madaugia}}" method="get">
+                            <button class="btn btn-default" style="width:70%;height:7%;margin-top:3%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E;">
+                                <span style="font-weight: bold;color: #fff;">Đấu giá</span>
+                            </button>
+                        </form>
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-2"></div>
                         <div class="col-md-10" style="text-align:left;">
                             Giá mua ngay
                             <br>
-                            <span class="numberical-info">{{formatNumber giamuangay}}</span> VND
+                            <span class="numberical-info">{{formatNumber product.giamuangay}}</span> VND
                         </div>
-                        <button class="btn btn-default" style="width:70%;height:7%;margin-top:3%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E;">
-                            <span style="font-weight: bold;color: #fff;">Mua ngay</span>
-                        </button>
+                        <form action="/product/buynow/{{product.madaugia}}" method="post">
+                            <button class="btn btn-default" style="width:70%;height:7%;margin-top:3%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E;">
+                                <span style="font-weight: bold;color: #fff;">Mua ngay</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <div class="row" style="border-top:2px solid #1057AF;margin-top: 2%;margin-left: 2%;margin-right: 2%;padding-top:3%;">
@@ -125,7 +139,7 @@
                             Người bán:
                         </div>
                         <div class="col-md-9" style="margin-top: -1%;">
-                            <span><a style="text-decoration: none;cursor: pointer;font-weight: bold;font-size: 150%;">{{ten}}</a></span>
+                            <span><a style="text-decoration: none;cursor: pointer;font-weight: bold;font-size: 150%;">{{product.ten}}</a></span>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 1%;">
@@ -133,7 +147,7 @@
                             Điểm đánh giá:
                         </div>
                         <div class="col-md-9" style="margin-top: -1%;">
-                            <span class="numberical-info"><a href="#">{{sub diemcong diemtru}}</a></span>
+                            <span class="numberical-info"><a href="#">{{sub product.diemcong product.diemtru}}</a></span>
                         </div>
                     </div>
                 </div>
@@ -151,7 +165,7 @@
                         Mã đấu giá
                     </div>
                     <div class="col-sm-6">
-                        {{madaugia}}
+                        {{product.madaugia}}
                     </div>
                 </div>
                 <div class="row even-row">
@@ -159,11 +173,7 @@
                         Trạng thái
                     </div>
                     <div class="col-sm-6">
-                        {{#if trangthai}}
-                            Đã qua sử dụng
-                        {{else}}
-                            Chưa qua sử dụng
-                        {{/if}}
+                        {{trangthai}}
                     </div>
                 </div>
                 <div class="row odd-row">
@@ -171,7 +181,7 @@
                         Ngày giờ bắt đầu
                     </div>
                     <div class="col-sm-6">
-                        {{shortDateTime tgbatdau}}
+                        {{shortDateTime product.tgbatdau}}
                     </div>
                 </div>
                 <div class="row even-row">
@@ -179,7 +189,7 @@
                         Ngày giờ kết thúc
                     </div>
                     <div class="col-sm-6">
-                        {{shortDateTime tgketthuc}}
+                        {{shortDateTime product.tgketthuc}}
                     </div>
                 </div>
             </div>
@@ -190,7 +200,7 @@
                         Giá hiện tại
                     </div>
                     <div class="col-sm-6">
-                        {{formatNumber giahientai}} VND
+                        {{formatNumber product.giahientai}} VND
                     </div>
                 </div>
                 <div class="row even-row">
@@ -198,15 +208,23 @@
                         Giá mua ngay
                     </div>
                     <div class="col-sm-6">
-                        {{formatNumber giamuangay}} VND
+                        {{formatNumber product.giamuangay}} VND
                     </div>
                 </div>
                 <div class="row odd-row">
                     <div class="col-sm-6" style="font-weight: bold;">
+                        Bước giá
+                    </div>
+                    <div class="col-sm-6">
+                        {{formatNumber product.buocgia}} VND
+                    </div>
+                </div>
+                <div class="row even-row">
+                    <div class="col-sm-6" style="font-weight: bold;">
                         Người trả giá cao nhất
                     </div>
                     <div class="col-sm-6">
-                        {{hideRealUserName tennguoitragia}}
+                        {{hideRealUserName product.tennguoitragia}}
                     </div>
                 </div>
             </div>
@@ -219,11 +237,11 @@
             <div class="col-md-10">
                 <span style="font-size: 120%;font-weight: bold;">Thông tin sản phẩm</span>
                 <div class="col-md-12" style="border: 1px solid; padding:1%;">
-                    {{{thongtin}}}
+                    {{{product.thongtin}}}
                 </div>
             </div>
             <div class="col-md-1"></div>
         </div>
         <!-- /Thông tin sản phẩm -->
-    {{/with}}
+    
 </div>

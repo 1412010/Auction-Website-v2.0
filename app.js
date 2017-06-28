@@ -42,7 +42,7 @@ app.engine('hbs', exphbs({
     helpers: {
         section: exphbs_sections(),
         now: function() {
-            return moment().format('D/M/YYYY - HH:mm');
+            return moment().format('D/M/YYYY - HH:mm:ss');
         },
         formatNumber: function(n) {
             var nf = wnumb({
@@ -75,6 +75,10 @@ app.engine('hbs', exphbs({
         },
         sub: function(i1, i2) {
             var i = +i1 - +i2;
+            return i;
+        },
+        add: function(i1, i2) {
+            var i = +i1 + +i2;
             return i;
         },
         shortDateTime: function(datetime) {

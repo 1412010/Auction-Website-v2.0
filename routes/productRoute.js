@@ -1,5 +1,6 @@
 var express = require('express');
 var product = require('../models/product');
+var account = require('../models/account');
 
 var productRoute = express.Router();
 
@@ -52,17 +53,148 @@ productRoute.get('/byCat/:id', function(req, res) {
 });
 
 productRoute.get('/detail/:id', function(req, res) {
-    product.loadDetail(req.params.id)
+
+    if (!req.session.isLogged) {
+        product.loadDetail(req.params.id, false, null)
         .then(function(pro) {
             if (pro) {
+                var tt = 'Đã qua sử dụng';
+                if (pro.trangthai.lastIndexOf(1) === -1)
+                    tt = 'Chưa qua sử dụng';
                 res.render('product/detail', {
                     layoutModels: res.locals.layoutModels,
                     product: pro,
+                    watching: 'Theo dõi',
+                    trangthai: tt
                 });
             } else {
                 res.redirect('/home');
             }
         });
+    }
+    else {
+        product.loadDetail(req.params.id, true, req.session.account.id)
+        .then(function(pro) {
+            if (pro) {
+                var tt = 'Đã qua sử dụng';
+                if (pro.pro.trangthai.lastIndexOf(1) === -1)
+                    tt = 'Chưa qua sử dụng';
+                res.render('product/detail', {
+                    layoutModels: res.locals.layoutModels,
+                    product: pro.pro,
+                    watching: pro.watching,
+                    trangthai: tt
+                });
+            } else {
+                res.redirect('/home');
+            }
+        });
+    }
+});
+
+productRoute.post('/detail/:id', function(req, res) {
+    if (req.session.isLogged === true) {
+        product.insertTheoDoi(req.session.account.id, req.params.id)
+        .then(function() {
+            product.loadDetail(req.params.id, req.session.isLogged, req.session.account.id)
+            .then(function(pro) {
+                if (pro) {
+                    if (!req.session.isLogged) {
+                        res.render('product/detail', {
+                            layoutModels: res.locals.layoutModels,
+                            product: pro
+                        });
+                    }
+                    else {
+                        res.render('product/detail', {
+                            layoutModels: res.locals.layoutModels,
+                            product: pro.pro,
+                            watching: pro.watching
+                        });
+                    }
+                } else {
+                    res.redirect('/home');
+                }
+            });
+        });
+
+    } else {
+        res.render('account/login', {
+            layoutModels: res.locals.layoutModels,
+            showError: false,
+            errorMsg: ''
+        });
+    }
+});
+
+productRoute.get('/bid/:id', function(req, res) {
+    if (req.session.isLogged === true) {      
+        account.loadAccountbyId(req.session.account.id)
+        .then(function(acc) {
+            if (acc) {
+                var cong = acc.diemcong;
+                var tru = acc.diemtru;
+                console.log(cong);
+                console.log(tru);
+                console.log(cong / (cong + tru) <= 0.8);
+                if ((cong !== 0 || tru !== 0) && (cong / (cong + tru) <= 0.8)) {
+                    res.render('product/cannotbid', {
+                        layoutModels: res.locals.layoutModels
+                    });
+                } else {
+                    product.loadProductbyId(req.params.id)
+                    .then(function(pro) {
+                        if (pro) {
+                            res.render('product/bid', {
+                                layoutModels: res.locals.layoutModels,
+                                product: pro
+                            });
+                        } else {
+                            res.redirect('/home');
+                        }
+                    });
+                }
+            } else {
+                res.redirect('/home');
+            }                      
+        });
+    } else {
+        res.render('account/login', {
+            layoutModels: res.locals.layoutModels,
+            showError: false,
+            errorMsg: ''
+        });
+    }
+});
+
+productRoute.post('/bid/:id', function(req, res) {
+
+    var entity = {
+        giaphaitra: req.body.giaphaitra
+    }
+
+    product.insertTraGia(req.session.account.id, req.params.id, entity)
+    .then(function() {
+        product.updateGiaHienTai(req.params.id, entity)
+        .then(function() {
+            product.loadDetail(req.params.id, req.session.isLogged, req.session.account.id)
+            .then(function(pro) {
+                if (pro) {
+                    res.render('product/detail', {
+                        layoutModels: res.locals.layoutModels,
+                        product: pro.pro,
+                        watching: pro.watching
+                    });
+                } else {
+                    res.redirect('/home');
+                }
+            });
+        });
+    });
+});
+
+productRoute.post('/buynow/:id', function(req, res) {
+
 });
 
 module.exports = productRoute;

@@ -1,0 +1,117 @@
+{{#section 'title'}}
+    Sản phẩm đang theo dõi
+{{/section}}
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/account">Tài khoản</a></li>
+            <li class="active"><span>Danh sách đang bán</span></li>
+        </ol>
+        <!-- /Đường dẫn -->
+    </div>
+{{/section}}
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <style type="text/css">
+    .btn-account i {
+        margin-top: 2%;
+        font-size: 30px;
+    }
+    
+    .btn-account span {
+        padding-left: 15px;
+        padding-right: 5px;
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        font-size: 130%;
+    }
+    
+    .btn-account span small {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+    }
+    </style>
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+{{/section}}
+{{> accountPanel this}}
+<div class="col-md-9 container " style="padding-left: 1%; ">
+    {{#if isEmpty}}
+        <h2>Không có sản phẩm nào đang được đấu giá!</h2>
+    {{else}}
+        {{#each list}}
+            {{#isEqual ../layoutModels.account.id nguoigiugia}}
+            <div class="row well well-md " style="background-color: #fff; border-color: green; border-width: 3px;">
+            {{else}}
+            <div class="row well well-md " style="background-color: #fff">
+            {{/isEqual}}
+                <div class="media ">
+                    <div class="media-left ">
+                        <a href="/product/detail/{{madaugia}}"><img class="media-object pull-left " src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg" width="150px " height="130px " alt="... " style="border:1px solid silver">
+                        </a>
+                    </div>
+                    <div class="media-body ">
+                        <div class="row ">
+                            <!-- Tên sản phẩm -->
+                            <div class="col-md-6 ">
+                                <a class="media-heading " style="font-size: 150%;font-weight: bold; " href="# ">{{tensp}}</a>
+                                <br>
+                                <div style="vertical-align: text-bottom">
+                                    <span>Người đăng bán: </span> <a href="# ">{{tennguoiban}}</a>
+                                    <br>
+                                    <span>Danh mục: </span> {{tendanhmuc}}
+                                </div>
+                            </div>
+                            <!-- Giá sản phẩm -->
+                            <div class="col-md-3 " style="padding-top: 1%; border-left: 1px dotted black; ">
+                                <!-- Giá hiện tại -->
+                                <span style="font-size: 85% ">Giá hiện tại:</span>
+                                <br>
+                                <div style="text-align: right ">
+                                    <span class="numberical-info-small " style="font-weight: bold; color:#00f; font-size: 120%; text-align: right ">{{formatNumber giahientai}} </span>&nbspvnd</div>
+                                <!-- Giá mua ngay -->
+                                <span style="font-size: 85% ">Giá mua ngay: </span>
+                                {{#if giamuangay}}
+                                    <div style="text-align: right ">
+                                        <span class="numberical-info-small " style="font-weight: bold; font-size:120%; color:#f00 ">{{formatNumber giamuangay}}</span>&nbspvnd</div>
+                                {{else}}
+                                    <div style="text-align: right ">
+                                        <span class="numberical-info-small " style="font-weight: bold; font-size:120%; color:#f00 ">Không có</span>&nbspvnd</div>
+                                {{/if}}
+                                <!-- Người giữ giá -->
+                                <span style="font-size: 85% ">Người giữ giá:</span>
+                                <br>
+                                {{#if tennguoigiugia}}
+                                    <div style="text-align: right ">
+                                        <span class="numberical-info-small " style="font-weight: bold; color:#00f; font-size: 120%; text-align: right ">{{tennguoigiugia}} </span></div>
+                                {{else}}
+                                    <div style="text-align: right ">
+                                        <span class="numberical-info-small " style="font-weight: bold; color:#00f; font-size: 120%; text-align: right ">Chưa có</span></div>
+                                {{/if}}
+                            </div>
+                            <!-- Thông tin khác -->
+                            <div class="col-md-3 " style="padding-top: 1%; border-left: 1px dotted black; ">
+                                <!-- Thời gian còn lại -->
+                                <span style="font-size: 85% ">Thời gian còn lại: </span>
+                                <div style="text-align: center ">
+                                    <span class="numberical-info-small " style="font-weight: bold; font-size: 130%; color:#00f; font-size: 130% ">{{timeRemain tgketthuc}}</span></div>
+                                <!-- Lượt đấu giá -->
+                                <span style="font-size: 85% ">Số lượt đấu giá: &nbsp</span>
+                                <div style="text-align: center "><span class="numberical-info-small " style="font-weight: bold; font-size: 130%; color:#f00 ">{{solandaugia}}</span>&nbsplượt</div>
+                                <!-- Nút đấu giá -->
+                                <button class="btn btn-default " style="width:100%;box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.2);border: none;border-radius: 0px;background-color: #0CC81E; margin-top: 1%">
+                                    <span style="font-weight: bold;color: #fff; ">Đấu giá</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    {{/if}}
+</div>

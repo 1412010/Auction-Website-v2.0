@@ -1,0 +1,89 @@
+{{#section 'title'}}
+    Danh sách thắng
+{{/section}}
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/account">Tài khoản</a></li>
+            <li class="active"><span>Danh sách đã bán</span></li>
+        </ol>
+        <!-- /Đường dẫn -->
+    </div>
+{{/section}}
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
+    <style type="text/css">
+    .btn-account i {
+        margin-top: 2%;
+        font-size: 30px;
+    }
+    
+    .btn-account span {
+        padding-left: 15px;
+        padding-right: 5px;
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        font-size: 130%;
+    }
+    
+    .btn-account span small {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+    }
+    </style>
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+{{/section}}
+{{> accountPanel this}}
+<div class="col-md-9">
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Danh sách đã bán</span>
+        </div>
+        <div class="panel-body">
+            {{#if isEmpty}}
+                <h2>Bạn chưa bán thành công sản phẩm nào.</h2>
+            {{else}}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="hidden-xs ">ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Tên người mua</th>
+                            <th>Giá khởi điểm</th>
+                            <th>Giá mua</th>
+                            <th> &nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each list}}
+                            <a href="/product/detail/{{madaugia}}">
+                                <tr>
+                                    <td>{{madaugia}}</td>
+                                    <td><a href="/product/detail/{{madaugia}}">{{tensp}}</a></td>
+                                    <td>{{tennguoimua}}</td>
+                                    <td>{{formatNumber giakhoidiem}}</td>
+                                    <td>{{formatNumber giahientai}}</td>
+                                    <td>
+                                        <a href="/account/rate?{{id}}" class="btn btn-xs btn-primary" title="rate">
+                                            Đánh giá
+                                        </a>
+                                    </td>
+                                </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{/if}}
+        </div>
+        <!-- panel body -->
+        <!-- form -->
+    </div>
+</div>

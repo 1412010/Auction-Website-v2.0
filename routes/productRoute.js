@@ -246,6 +246,22 @@ productRoute.get('/bidlog/:id', function(req, res) {
     });
 });
 
+productRoute.post('/bidlog/:id', function(req, res) {
+    product.deleteTraGia(req.body.gia, req.params.id)
+    .then(function() {
+        product.insertCamDauGia(req.body.gia, req.params.id)
+        .then(function() {
+            product.loadTraGia(req.body.gia, req.params.id)
+            .then(function(row) {
+                product.updateNguoiGiuGia(req.body.gia, req.params.id, row.gia)
+                .then(function() {
+                    res.redirect('bidlog/' + req.params.id);
+                });
+            });
+        });
+    });
+});
+
 productRoute.post('/buynow/:id', function(req, res) {
 
 });

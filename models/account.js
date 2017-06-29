@@ -185,7 +185,7 @@ exports.getWatchingList = function(id) {
     var entity = {
         id: id
     };
-    var sql = mustache.render('select tb1.*, tb2.id, tb2.ten as nguoitragia from (SELECT sp.*, tk2.ten FROM taikhoan tk1, sanpham sp, taikhoan tk2 where tk1.id={{id}} and tk2.id = sp.manguoiban   and tk1.id in (select td.nguoitheodoi from theodoi td) and sp.madaugia in (select td.sanpham from theodoi td)) tb1 left join (select tk3.id, tk3.ten, tg.gia, tg.sanpham from taikhoan tk3, tragia tg where tk3.id = tg.nguoitragia) tb2 on tb1.giahientai = tb2.gia and tb2.sanpham = tb1.madaugia', entity);
+    var sql = mustache.render('SELECT tb1.*, tk1.ten as tengiugia From (SELECT sp.*, dm.tendanhmuc, tk.ten as tennguoiban From theodoi td, sanpham sp, danhmuc dm, taikhoan tk where td.nguoitheodoi = {{id}} and td.sanpham = sp.madaugia and sp.danhmuc = dm.id and tk.id = sp.manguoiban) tb1 LEFT JOIN taikhoan tk1 on tk1.id = tb1.nguoigiugia', entity);
 
     db.load(sql).then(function(rows) {
         deferred.resolve(rows);

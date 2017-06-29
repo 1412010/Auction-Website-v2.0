@@ -288,4 +288,46 @@ accountRoute.get('/ratedetail', restrict, function(req, res) {
     });
 });
 
+accountRoute.get('/bidingList', restrict, function(req, res) {
+    account.getBidingList(res.locals.layoutModels.account.id).then(function(rows) {
+       res.render('account/bidingList', {
+           list: rows,
+           isEmpty: rows.length === 0,
+           layoutModels: res.locals.layoutModels
+       });
+    });
+});
+
+accountRoute.get('/wonList', restrict, function(req, res) {
+    account.getWonList(res.locals.layoutModels.account.id).then(function(rows) {
+       res.render('account/wonList', {
+           list: rows,
+           isEmpty: rows.length === 0,
+           layoutModels: res.locals.layoutModels
+       });
+    });
+});
+
+accountRoute.get('/sellingList', restrict, function(req, res) {
+    account.getSellingList(res.locals.layoutModels.account.id).then(function(rows) {
+    //console.log(rows.length);
+       res.render('account/sellingList', {
+           list: rows,
+           isEmpty: rows.length === 0,
+           layoutModels: res.locals.layoutModels
+       });
+    });
+});
+
+accountRoute.get('/soldList', restrict, function(req, res) {
+    account.getSoldList(res.locals.layoutModels.account.id).then(function(rows) {
+
+       res.render('account/soldList', {
+           list: rows,
+           isEmpty: rows.length === 0,
+           layoutModels: res.locals.layoutModels
+       });
+    });
+});
+
 module.exports = accountRoute;

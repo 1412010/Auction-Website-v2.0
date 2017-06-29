@@ -1,13 +1,13 @@
 <!-- Panel left -->
 <div class="col-md-3">
-    <a class="btn btn-info btn-account " href="#" style="width: 100%; margin-bottom: 20px; background-color: #189eff">
+    <a class="btn btn-info btn-account " href="/account/profile" style="width: 100%; margin-bottom: 20px; background-color: #189eff">
         <i class="glyphicon glyphicon-user pull-left"></i>
-        <span>Nguyễn Đức Anh<br><small>Thông tin tài khoản</small></span>
+        <span>{{layoutModels.account.name}}<br><small>Thông tin tài khoản</small></span>
     </a>
     <div class="panel panel-default" style="border-color: #189eff;">
         <div class="panel-heading" style="background-color: #189eff; color:#fff">Quản lý đấu giá sản phẩm </div>
         <div class="list-group">
-            <a href="#" class="list-group-item">Đang theo dõi</a>
+            <a href="/account/watching" class="list-group-item">Đang theo dõi</a>
             <a href="#" class="list-group-item">Đang đấu giá</a>
             <a href="#" class="list-group-item">Đấu giá thành công</a>
             <a href="#" class="list-group-item">Đấu giá đã kết thúc</a>
@@ -16,7 +16,7 @@
     <div class="panel panel-default" style="border-color: #189eff;">
         <div class="panel-heading" style="background-color: #189eff; color:#fff">Quản lý bán hàng</div>
         <div class="list-group">
-            <a href="#" class="list-group-item">Đăng bán mới</a>
+            <a href="/account/NewAuction" class="list-group-item">Đăng bán mới</a>
             <a href="#" class="list-group-item">Sản phẩm đang bán</a>
             <a href="#" class="list-group-item">Sản phẩm đã bán thành công</a>
         </div>

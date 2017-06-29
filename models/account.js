@@ -200,7 +200,7 @@ exports.isPermittedToSell = function(id) {
     };
     var sql = mustache.render('select xb.nguoixin from xinduocban xb, taikhoan tk where tk.id={{id}}  and xb.nguoixin = tk.id and xb.trangthai = 1 and xb.thoigianhet >= now()', entity);
     console.log(sql);
-    db.load(sql).then(function(rows){
+    db.load(sql).then(function(rows) {
         console.log(rows);
         if (rows.length > 0) {
             console.log('true');
@@ -216,13 +216,10 @@ exports.getEmailById = function(id) {
     var sql = 'select email from taikhoan where id =' + id;
 
     db.load(sql).then(function(rows) {
-        if (rows.length > 0)
-        {
+        if (rows.length > 0) {
             deferred.resolve(rows[0]);
-        }
-        else
-        {
-             deferred.resolve(null);
+        } else {
+            deferred.resolve(null);
         }
     });
 
@@ -235,13 +232,10 @@ exports.isEmailExisted = function(entity) {
     var sql = mustache.render('select * from taikhoan where email = "{{email}}"', entity);
     console.log(sql);
     db.load(sql).then(function(rows) {
-        if (rows.length > 0)
-        {
+        if (rows.length > 0) {
             deferred.resolve(true);
-        }
-        else
-        {
-             deferred.resolve(false);
+        } else {
+            deferred.resolve(false);
         }
     });
 
@@ -257,12 +251,12 @@ exports.getRateDetail = function(id) {
     var sqlcount = mustache.render('select count(*) as total from ketquadaugia where nguoiban = {{id}} or nguoimua = {{id}}', entity);
     //console.log(sqlcount);
     promises.push(db.load(sqlcount));
-    
+
     var sql2 = mustache.render('select kq.*, tknguoimua.ten as tennguoimua, tknguoiban.ten as tennguoiban from ketquadaugia kq, taikhoan tknguoimua, taikhoan tknguoiban where (kq.nguoiban = {{id}} or kq.nguoimua = {{id}}) and tknguoimua.id = kq.nguoimua and tknguoiban.id = kq.nguoiban', entity);
     //console.log(sql2);
     promises.push(db.load(sql2));
 
-     Q.all(promises).spread(function(totalRow, rows) {
+    Q.all(promises).spread(function(totalRow, rows) {
         var data = {
             total: totalRow[0].total,
             list: rows
@@ -270,5 +264,62 @@ exports.getRateDetail = function(id) {
         deferred.resolve(data);
     });
 
+    return deferred.promise;
+}
+
+exports.getBidingList = function(id) {
+    var deferred = Q.defer();
+
+    var entity = {
+        id: id
+    };
+
+    var sql = mustache.render('select tb1.*, tk.ten as tennguoigiugia from taikhoan tk right Join (select sp.*, dm.tendanhmuc, tk1.ten as tennguoiban from sanpham sp, tragia tg, danhmuc dm, taikhoan tk1 where sp.madaugia = tg.sanpham and sp.tgketthuc > now() and tg.nguoitragia = {{id}} and dm.id = sp.danhmuc  and tk1.id = sp.manguoiban) tb1 on tb1.nguoigiugia = tk.id ', entity);
+    db.load(sql).then(function(rows) {
+        deferred.resolve(rows);
+    });
+    return deferred.promise;
+}
+
+
+exports.getWonList = function(id) {
+    var deferred = Q.defer();
+
+    var entity = {
+        id: id
+    };
+
+    var sql = mustache.render('select sp.*, tk.id, tk.ten as tennguoiban from sanpham sp, ketquadaugia kq, taikhoan tk where kq.nguoimua = {{id}} and kq.sanpham = sp.madaugia and tk.id = sp.manguoiban ', entity);
+    db.load(sql).then(function(rows) {
+        deferred.resolve(rows);
+    });
+    return deferred.promise;
+}
+
+exports.getSellingList = function(id) {
+    var deferred = Q.defer();
+
+    var entity = {
+        id: id
+    };
+
+    var sql = mustache.render('select tb1.*, tk.ten as tennguoigiugia from taikhoan tk right Join (select sp.*, dm.tendanhmuc, tk1.ten as tennguoiban from sanpham sp, danhmuc dm, taikhoan tk1 where  sp.tgketthuc > now()  and dm.id = sp.danhmuc and tk1.id = sp.manguoiban and sp.manguoiban = {{id}}) tb1 on tb1.nguoigiugia = tk.id', entity);
+    db.load(sql).then(function(rows) {
+        deferred.resolve(rows);
+    });
+    return deferred.promise;
+}
+
+exports.getSoldList = function(id) {
+    var deferred = Q.defer();
+
+    var entity = {
+        id: id
+    };
+
+    var sql = mustache.render('select sp.*, tk.id, tk.ten as tennguoimua  from sanpham sp, ketquadaugia kq, taikhoan tk where kq.nguoiban = {{id}} and kq.sanpham = sp.madaugia and tk.id = kq.nguoimua', entity);
+    db.load(sql).then(function(rows) {
+        deferred.resolve(rows);
+    });
     return deferred.promise;
 }

@@ -116,15 +116,27 @@ accountRoute.post('/register', function(req, res) {
         permission: 0,
         gender: ngender
     };
-
-    account.insert(entity)
-        .then(function(insertId) {
-            res.render('account/register', {
-                layoutModels: res.locals.layoutModels,
-                showError: true,
-                errorMsg: 'Đăng ký thành công.'
-            });
+    account.isEmailExisted(entity)
+        .then(function(result) {
+            console.log(result);
+            if (result) {
+                res.render('account/register', {
+                    layoutModels: res.locals.layoutModels,
+                    showError: true,
+                    errorMsg: 'Đăng ký thất bại. Email đã tồn tại.'
+                });
+            } else {
+                account.insert(entity)
+                    .then(function(insertId) {
+                        res.render('account/register', {
+                            layoutModels: res.locals.layoutModels,
+                            showError: true,
+                            errorMsg: 'Đăng ký thành công.'
+                        });
+                    });
+            }
         });
+
 });
 
 //Thay đổi thông tin người dùng
@@ -207,7 +219,7 @@ accountRoute.get('/newAuction', restrict, function(req, res) {
     account.isPermittedToSell(res.locals.layoutModels.account.id).then(function(result) {
         res.render('account/newAuction', {
             isPermitted: result,
-            isSucceeded: false, 
+            isSucceeded: false,
             layoutModels: res.locals.layoutModels
         });
     });
@@ -237,7 +249,7 @@ accountRoute.post('/newAuction', upload.array('hinhanh', 12), function(req, res)
         });
         res.render('account/newAuction', {
             isPermitted: true,
-            isSucceeded: true, 
+            isSucceeded: true,
             layoutModels: res.locals.layoutModels
         });
     });

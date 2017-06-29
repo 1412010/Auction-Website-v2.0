@@ -48,19 +48,19 @@
             <div class="row well well-md " style="background-color: #fff ">
                 <div class="media ">
                     <div class="media-left ">
-                        <a href="# "><img class="media-object pull-left " src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg" width="150px " height="130px " alt="... " style="border:1px solid silver">
+                        <a href="/product/detail/{{madaugia}}"><img class="media-object pull-left " src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg" width="150px " height="130px " alt="... " style="border:1px solid silver">
                         </a>
                     </div>
                     <div class="media-body ">
                         <div class="row ">
                             <!-- Tên sản phẩm -->
                             <div class="col-md-6 ">
-                                <a class="media-heading " style="font-size: 150%;font-weight: bold; " href="# ">{{tensp}}</a>
+                                <a class="media-heading " style="font-size: 150%;font-weight: bold; " href="/product/detail/{{madaugia}}">{{tensp}}</a>
                                 <br>
                                 <div style="vertical-align: text-bottom">
-                                    <span>Người đăng bán: </span> <a href="# ">{{ten}}</a>
+                                    <span>Người đăng bán: </span> <a href="#{{manguoiban}}">{{tennguoiban}}</a>
                                     <br>
-                                    <span>Danh mục: </span> Điện thoại - máy tính bản
+                                    <span>Danh mục: </span> <a href="/product/byCat/{{danhmuc}}">{{tendanhmuc}}</a>
                                 </div>
                             </div>
                             <!-- Giá sản phẩm -->
@@ -82,9 +82,9 @@
                                 <!-- Người giữ giá -->
                                 <span style="font-size: 85% ">Người giữ giá:</span>
                                 <br>
-                                {{#if nguoitragia}}
+                                {{#if tengiugia}}
                                     <div style="text-align: right ">
-                                        <span class="numberical-info-small " style="font-weight: bold; color:#00f; font-size: 120%; text-align: right ">{{hideRealUserName nguoitragia}} </span></div>
+                                        <span class="numberical-info-small " style="font-weight: bold; color:#00f; font-size: 120%; text-align: right ">{{hideRealUserName tengiugia}} </span></div>
                                 {{else}}
                                     <div style="text-align: right ">
                                         <span class="numberical-info-small " style="font-weight: bold; color:#00f; font-size: 120%; text-align: right ">Chưa có</span></div>

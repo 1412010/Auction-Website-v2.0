@@ -11,7 +11,8 @@
     </div>
 {{/section}}
 {{#section 'css'}}
-    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/docs.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
     <style type="text/css">
     .btn-account i {
         margin-top: 2%;
@@ -78,14 +79,14 @@
         <div class="row well well-md " style="background-color: #fff ">
             <div class="media ">
                 <div class="media-left ">
-                    <a href="# "><img class="media-object pull-left " src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg" width="150px " height="130px " alt="... " style="border:1px solid silver">
+                    <a href="/product/detail/{{madaugia}}"><img class="media-object pull-left " src="/Imgs/sp/{{madaugia}}/main_thumbs.jpg" width="150px " height="130px " alt="... " style="border:1px solid silver">
                     </a>
                 </div>
                 <div class="media-body ">
                     <div class="row ">
                         <!-- Tên sản phẩm -->
                         <div class="col-md-6 ">
-                            <a class="media-heading " style="font-size: 150%;font-weight: bold; " href="# ">                        {{tensp}}
+                            <a class="media-heading " style="font-size: 150%;font-weight: bold; " href="/product/detail/{{madaugia}}">                        {{tensp}}
                             </a>
                             {{#isNewProduct tgbatdau}}
                                 <span class="label label-danger">New</span>

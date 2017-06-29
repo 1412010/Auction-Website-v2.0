@@ -248,3 +248,27 @@ exports.isEmailExisted = function(entity) {
     return deferred.promise;
 }
 
+exports.getRateDetail = function(id) {
+    var deferred = Q.defer();
+    var promises = [];
+    var entity = {
+        id: id
+    };
+    var sqlcount = mustache.render('select count(*) as total from ketquadaugia where nguoiban = {{id}} or nguoimua = {{id}}', entity);
+    //console.log(sqlcount);
+    promises.push(db.load(sqlcount));
+    
+    var sql2 = mustache.render('select kq.*, tknguoimua.ten as tennguoimua, tknguoiban.ten as tennguoiban from ketquadaugia kq, taikhoan tknguoimua, taikhoan tknguoiban where (kq.nguoiban = {{id}} or kq.nguoimua = {{id}}) and tknguoimua.id = kq.nguoimua and tknguoiban.id = kq.nguoiban', entity);
+    //console.log(sql2);
+    promises.push(db.load(sql2));
+
+     Q.all(promises).spread(function(totalRow, rows) {
+        var data = {
+            total: totalRow[0].total,
+            list: rows
+        }
+        deferred.resolve(data);
+    });
+
+    return deferred.promise;
+}

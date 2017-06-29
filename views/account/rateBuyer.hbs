@@ -1,0 +1,147 @@
+{{#section 'title'}} Đăng ký {{/section}}
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <style type="text/css">
+    label {
+        font-weight: normal !important;
+    }
+    .btn-account i {
+        margin-top: 2%;
+        font-size: 30px;
+    }
+    
+    .btn-account span {
+        padding-left: 15px;
+        padding-right: 5px;
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        font-size: 130%;
+    }
+    
+    .btn-account span small {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+    }
+    </style>
+{{/section}}
+{{#section 'js'}}
+    <script src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    function recaptchaCallback() {
+        $('#hiddenRecaptcha').valid();
+    };
+    $('#frmNewPer').validate({
+        ignore: ".ignore",
+        rules: {
+
+            nx: {
+                required: true
+            },
+
+            hiddenRecaptcha: {
+                required: function() {
+                    if (grecaptcha.getResponse() == '') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                }
+            }
+
+        },
+
+        messages: {
+
+            nx: {
+                required: 'Vui lòng nhập đánh giá.'
+            },
+
+            hiddenRecaptcha: {
+                required: 'Nhập capcha'
+            }
+        },
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+
+        highlight: function(element) {
+            $(element)
+                .closest('.form-group')
+                .addClass('has-error');
+        },
+
+        success: function(label) {
+            $(label)
+                .closest('.form-group')
+                .removeClass('has-error');
+
+            label.remove();
+        },
+    });
+    </script>
+{{/section}}
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/account">Tài khoản</a></li>
+            <li><a href="/account/soldList">Danh sách đã bán</a></li>
+            <li class="active"><span>Đánh giá người mua</span></li>
+        </ol>
+        <!-- /Đường dẫn -->
+    </div>
+{{/section}}
+{{> accountPanel this}}
+<div class="col-md-9">
+    {{#if showError }}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> {{ errorMsg }}
+        </div>
+    {{/if}}
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Xin được bán</span>
+        </div>
+        <form class="form-horizontal" method="post" action="" id="frmNewPer">
+            <div class="panel-body">
+                <!-- panel body -->
+                <div class="col-sm-12">
+                   <div class="form-group">
+                        <label class="control-label col-sm-2" for="ten">Nhận xét:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="nx" name="nx" placeholder="Nhập nhận xét">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <!-- Giới tính radio -->
+                        <label class="control-label col-sm-2" for="chonGioiTinh">Điểm:</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="diem" checked="true" value="1">+1</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="diem" value="-1">-1</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- Facebook, google -->
+            </div>
+            <!-- panel body -->
+            <div class="panel-footer">
+                <div class="col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+        <!-- form -->
+    </div>
+</div>

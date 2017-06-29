@@ -165,20 +165,118 @@ exports.insertTraGia = function(idnguoitragia, idsanpham, entity) {
     return deferred.promise;
 }
 
-exports.updateGiaHienTai = function(idsanpham, entity) {
+exports.updateDatGiaHienTai = function(idsanpham, entity) {
     var deferred = Q.defer();
 
-    var sql = mustache.render('update sanpham set giahientai = {{giaphaitra}} where madaugia = ' + idsanpham, entity);
+    var sql = mustache.render('update sanpham set giahientai = {{giaphaitra}}, solandaugia = solandaugia + 1, nguoigiugia = {{nguoigiugia}} where madaugia = ' + idsanpham, entity);
     db.update(sql).then(function(changedRows) {
         deferred.resolve(changedRows);
     });
 
     return deferred.promise;
 }
+
+exports.loadProductSelling = function(id) {
+    var deferred = Q.defer();
+
+    var currentdate = new Date(); 
+    var datetime = + currentdate.getFullYear() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getDate() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+    var sql = 'select * from (select * from sanpham sp, taikhoan tk where sp.manguoiban = ' + id + ' and sp.manguoiban = id and not exists (select * from tragia where sanpham = sp.madaugia and gia = sp.giamuangay) and tgketthuc > "' + datetime + '") as ttsp left join (select id, ten as tennguoigiugia from taikhoan) as nb on ttsp.manguoibanzz = nb.id';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.loadProductSold = function(id) {
+    var deferred = Q.defer();
+
+    var currentdate = new Date(); 
+    var datetime = + currentdate.getFullYear() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getDate() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+    var sql = 'select * from sanpham sp, taikhoan tk where sp.manguoiban = ' + id + ' and sp.manguoiban = id and ((exists (select * from tragia where sanpham = sp.madaugia and gia = sp.giamuangay) or (exists (select * from tragia where sanpham = sp.madaugia) and tgketthuc < "' + datetime + '")))';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.loadBidLogById = function(id) {
+    var deferred = Q.defer();
+    var sql = 'select * from taikhoan, tragia where sanpham = '+ id + ' and id = nguoitragia order by thoigiantra desc';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.loadCamDauGia = function(tk, sp) {
+    var deferred = Q.defer();
+    var sql = 'select * from camdaugia where sanpham = '+ sp + ' and taikhoan = ' + tk;
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.loadHetHan = function(id) {
+    var deferred = Q.defer();
+
+    var currentdate = new Date(); 
+    var datetime = + currentdate.getFullYear() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getDate() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+    var sql = 'select * from sanpham where madaugia = '+ id + ' and tgketthuc < "' + datetime + '"';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
 //hàm lấy danh sách sản phẩm dựa trên từ khóa, loại sản phẩm
 exports.searchProduct = function(word, cat, orderBy, limit, offset) {
     var deferred = Q.defer();
-
+ 
     var entity = {
         limit: limit,
         offset: offset,
@@ -187,41 +285,21 @@ exports.searchProduct = function(word, cat, orderBy, limit, offset) {
         cat: cat
     };
     var promises = [];
-    
+     
     var sql_1 = mustache.render('SELECT COUNT(*) as total from sanpham sp, danhmuc dm, taikhoan tk where sp.tensp LIKE CONCAT("%","{{word}}" ,"%") and sp.danhmuc={{cat}} and dm.id = sp.danhmuc and sp.manguoiban = tk.id ORDER BY {{orderBy}}', entity);
     promises.push(db.load(sql_1));
-
+ 
     var sql_2 = mustache.render('SELECT sp.*, dm.tendanhmuc, tk.ten from sanpham sp, danhmuc dm, taikhoan tk where sp.tensp LIKE CONCAT("%","{{word}}" ,"%") and sp.danhmuc={{cat}} and dm.id = sp.danhmuc and sp.manguoiban = tk.id ORDER BY {{orderBy}} LIMIT {{limit}} OFFSET {{offset}}', entity);
     promises.push(db.load(sql_2));
-
+ 
     Q.all(promises).spread(function(totalRow, rows) {
         var data = {
-            total: totalRow[0].total,
-            rows: rows
+             total: totalRow[0].total,
+             rows: rows
         }
         deferred.resolve(data);
     });
-
-
+ 
+ 
     return deferred.promise;
 }
-// exports.makeCartItem = function(id, q) {
-
-//     var deferred = Q.defer();
-
-//     var sql = 'select * from products where ProID = ' + id;
-//     db.load(sql).then(function(rows) {
-//         if (rows) {
-//             var ret = {
-//                 Product: rows[0],
-//                 Quantity: q,
-//                 Amount: rows[0].Price * q
-//             }
-//             deferred.resolve(ret);
-//         } else {
-//             deferred.resolve(null);
-//         }
-//     });
-
-//     return deferred.promise;
-// }

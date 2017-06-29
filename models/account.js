@@ -53,8 +53,7 @@ exports.updatePassword = function(pw) {
     var deferred = Q.defer();
     var sql = mustache.render('SELECT * FROM taikhoan WHERE id={{id}}', pw);
     db.load(sql).then(function(rows) {
-        if (pw.oldPW == rows[0].matkhau)
-        {
+        if (pw.oldPW == rows[0].matkhau) {
             var sql2 = mustache.render('UPDATE taikhoan SET matkhau="{{newPW}}" WHERE id={{id}}', pw);
             db.update(sql2).then(function(result) {
                 if (result > 0) {
@@ -159,7 +158,7 @@ exports.loadApproval = function() {
 
 exports.updateApproval = function(id) {
     var deferred = Q.defer();
-    var temp = moment() + (1000 * 3600 * 24 * 7); 
+    var temp = moment() + (1000 * 3600 * 24 * 7);
     var entity = {
         id: id,
         date: moment(temp).format('YYYY-MM-DD')
@@ -167,8 +166,8 @@ exports.updateApproval = function(id) {
     var sql1 = mustache.render(
         'update xinduocban set trangthai = 1, thoigianhet = "{{date}}" where id = {{id}}',
         entity
-    ); 
-    db.update(sql1).then(function (changedRows1){
+    );
+    db.update(sql1).then(function(changedRows1) {
         var sql2 = 'select nguoixin from xinduocban where id =' + id;
         db.load(sql2).then(function(rows) {
             var nguoixin = rows[0].nguoixin;
@@ -177,6 +176,36 @@ exports.updateApproval = function(id) {
                 deferred.resolve(changedRows1);
             });
         });
+    });
+    return deferred.promise;
+}
+
+exports.getWatchingList = function(id) {
+    var deferred = Q.defer();
+    var entity = {
+        id: id
+    };
+    var sql = mustache.render('select tb1.*, tb2.id, tb2.ten as nguoitragia from (SELECT sp.*, tk2.ten FROM taikhoan tk1, sanpham sp, taikhoan tk2 where tk1.id={{id}} and tk2.id = sp.manguoiban   and tk1.id in (select td.nguoitheodoi from theodoi td) and sp.madaugia in (select td.sanpham from theodoi td)) tb1 left join (select tk3.id, tk3.ten, tg.gia, tg.sanpham from taikhoan tk3, tragia tg where tk3.id = tg.nguoitragia) tb2 on tb1.giahientai = tb2.gia and tb2.sanpham = tb1.madaugia', entity);
+
+    db.load(sql).then(function(rows) {
+        deferred.resolve(rows);
+    });
+    return deferred.promise;
+}
+
+exports.isPermittedToSell = function(id) {
+    var deferred = Q.defer();
+    var entity = {
+        id: id
+    };
+    var sql = mustache.render('select xb.nguoixin from xinduocban xb, taikhoan tk where tk.id={{id}}  and xb.nguoixin = tk.id and xb.trangthai = 1 and xb.thoigianhet >= now()', entity);
+    console.log(sql);
+    db.load(sql).then(function(rows){
+        console.log(rows);
+        if (rows.length > 0) {
+            console.log('true');
+            deferred.resolve(true);
+        } else deferred.resolve(false);
     });
     return deferred.promise;
 }

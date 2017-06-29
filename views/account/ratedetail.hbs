@@ -1,0 +1,98 @@
+{{#section 'title'}}
+    Chi tiết đánh giá
+{{/section}}
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/account">Tài khoản</a></li>
+            <li class="active"><span>Chi tiết đánh giá</span></li>
+        </ol>
+        <!-- /Đường dẫn -->
+    </div>
+{{/section}}
+{{#section 'css'}}
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
+    <link href="/assets/css/docs.css" rel="stylesheet">
+    <style type="text/css">
+    .btn-account i {
+        margin-top: 2%;
+        font-size: 30px;
+    }
+    
+    .btn-account span {
+        padding-left: 15px;
+        padding-right: 5px;
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        font-size: 130%;
+    }
+    
+    .btn-account span small {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+    }
+    </style>
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+{{/section}}
+{{> accountPanel this}}
+<div class="col-md-9">
+    <div class="panel panel-default" style="border-color: #189eff;">
+        <div class="panel-heading" style="background-color: #189eff;">
+            <span class="panel-title">Chi tiết đánh giá</span>
+        </div>
+        <div class="panel-body">
+            {{#if isEmpty}}
+                <h2>Bạn chưa có đánh giá nào.</h2>
+            {{else}}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Người đánh giá</th>
+                            <th>Điểm đánh giá</th>
+                            <th>Nhận xét</th </tr>
+                    </thead>
+                    <tbody>
+                    {{#each list}}
+                    
+                        {{#isEqual ../layoutModels.account.id nguoiban}}
+                            <tr>
+                                <td>{{tennguoimua}}</td>
+                                <td>{{ngmuacongdiem}}</td>
+                                <td>{{ngmuanhanxet}}</td>
+                            </tr>
+                       
+                        {{else}}
+                            <tr>
+                                <td>{{tennguoiban}}</td>
+                                <td>{{ngbancongdiem}}</td>
+                                <td>{{ngbannhanxet}}</td>
+                            </tr>
+                        {{/isEqual}}
+                     {{/each}}
+                        
+                    </tbody>
+                </table>
+            {{/if}}
+        </div>
+        <!-- panel body -->
+        <div class="panel-footer">
+            <h3>
+                Phần trăm đánh giá: 
+                {{#if isEmpty}} 
+                    {{rate}}
+                {{else}}
+                    {{rate}}%
+                {{/if}}
+            </h3>
+        </div>
+        <!-- form -->
+    </div>
+</div>

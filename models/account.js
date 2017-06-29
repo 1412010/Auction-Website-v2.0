@@ -209,3 +209,42 @@ exports.isPermittedToSell = function(id) {
     });
     return deferred.promise;
 }
+
+exports.getEmailById = function(id) {
+    var deferred = Q.defer();
+
+    var sql = 'select email from taikhoan where id =' + id;
+
+    db.load(sql).then(function(rows) {
+        if (rows.length > 0)
+        {
+            deferred.resolve(rows[0]);
+        }
+        else
+        {
+             deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
+exports.isEmailExisted = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('select * from taikhoan where email = "{{email}}"', entity);
+    console.log(sql);
+    db.load(sql).then(function(rows) {
+        if (rows.length > 0)
+        {
+            deferred.resolve(true);
+        }
+        else
+        {
+             deferred.resolve(false);
+        }
+    });
+
+    return deferred.promise;
+}
+

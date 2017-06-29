@@ -5,6 +5,15 @@ var account = require('../models/account.js');
 var crypto = require('crypto');
 var restrict = require('../middle-wares/restrict');
 var moment = require('moment');
+var nodemailer = require('nodemailer');
+
+var smtpTransport = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'myauctionwebapp@gmail.com',
+        pass: 'tamhieuga'
+    }
+});
 
 var r = express.Router();
 
@@ -144,7 +153,29 @@ r.post('/account/reset', restrict, function(req, res) {
         };
         console.log(entity);
         account.reset(entity).then(function(affectedRows) {
-            res.redirect('/manager/account');
+            account.getEmailById(req.body.accId).then(function(row) {
+                console.log(row);
+                var mailOptions = {
+                    from: "Web Auction <myauctionwebapp@gmail.com>", // sender address
+                    to: row.email, // list of receivers
+                    subject: "Thông báo reset mật khẩu", // Subject line
+                    text: "Tài khoản bạn đã được reset mậu khẩu là: 00000000", // plaintext body
+                };
+                console.log(mailOptions);
+
+                smtpTransport.sendMail(mailOptions, function(error, response) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log("Message sent: " + response.message);
+                    }
+
+                    // if you don't want to use this transport object anymore, uncomment following line
+                    //smtpTransport.close(); // shut down the connection pool, no more messages
+                });
+                res.redirect('/manager/account');
+            });
+
         });
     }
 });

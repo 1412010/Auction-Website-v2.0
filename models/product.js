@@ -96,7 +96,7 @@ exports.loadProductbyId = function(id) {
 
 exports.loadTopRaGia = function() {
     var deferred = Q.defer();
-    var sql = 'select * from sanpham order by solandaugia desc limit 6';
+    var sql = 'select * from sanpham where tgketthuc > now() order by solandaugia desc limit 6';
     db.load(sql).then(function(rows) {
         if (rows) {
             deferred.resolve(rows);
@@ -110,7 +110,7 @@ exports.loadTopRaGia = function() {
 
 exports.loadTopGiaCao = function() {
     var deferred = Q.defer();
-    var sql = 'select * from sanpham order by giahientai desc limit 6';
+    var sql = 'select * from sanpham where tgketthuc > now() order by giahientai desc limit 6';
     db.load(sql).then(function(rows) {
         if (rows) {
             deferred.resolve(rows);

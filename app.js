@@ -90,6 +90,14 @@ app.engine('hbs', exphbs({
                 return options.inverse(this);
             }
         },
+        isNewProduct: function(val1, options) {
+            var timeDiff =  moment() - val1;
+            if (timeDiff <= 60) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
+        },
         hideRealUserName: function(name) {
             if (name != null) {
                 var nameStr = name.toString();

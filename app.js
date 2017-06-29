@@ -53,24 +53,21 @@ app.engine('hbs', exphbs({
         timeRemain: function(date) {
             var timeDiff = date.getTime() - moment();
             var string = "";
-            if(timeDiff > 86400000)
-            {
+            if (timeDiff > 86400000) {
                 string += Math.floor(timeDiff / 86400000);
                 string += " ngày ";
                 timeDiff = timeDiff % 86400000;
             }
-            if(timeDiff > 3600000)
-            {
+            if (timeDiff > 3600000) {
                 string += Math.floor(timeDiff / 3600000);
                 string += " giờ ";
                 timeDiff = timeDiff % 3600000;
             }
-            if(timeDiff > 60000)
-            {
+            if (timeDiff > 60000) {
                 string += Math.floor(timeDiff / 60000);
                 string += " phút";
             }
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
             return string.substring(0, 14);
         },
         sub: function(i1, i2) {
@@ -85,6 +82,13 @@ app.engine('hbs', exphbs({
             var full = datetime.toString();
             var dt = full.substring(0, 24);
             return dt;
+        },
+        isEqual: function(val1, val2, options) {
+            if (val1 === val2) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
         },
         hideRealUserName: function(name) {
             if (name != null) {

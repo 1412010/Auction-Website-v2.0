@@ -128,7 +128,7 @@ productRoute.post('/detail/:id', function(req, res) {
 });
 
 productRoute.get('/bid/:id', function(req, res) {
-    if (req.session.isLogged === true) {      
+    if (req.session.isLogged === true) {
         account.loadAccountbyId(req.session.account.id)
         .then(function(acc) {
             if (acc) {
@@ -139,18 +139,40 @@ productRoute.get('/bid/:id', function(req, res) {
                 console.log(cong / (cong + tru) <= 0.8);
                 if ((cong !== 0 || tru !== 0) && (cong / (cong + tru) <= 0.8)) {
                     res.render('product/cannotbid', {
-                        layoutModels: res.locals.layoutModels
+                        layoutModels: res.locals.layoutModels,
+                        lydo:" Điểm cộng thấp hơn 80%."
                     });
                 } else {
-                    product.loadProductbyId(req.params.id)
-                    .then(function(pro) {
-                        if (pro) {
-                            res.render('product/bid', {
+                    product.loadCamDauGia(req.session.account.id, req.params.id)
+                    .then(function(row) {
+                        if (row.length > 0) {
+                            res.render('product/cannotbid', {
                                 layoutModels: res.locals.layoutModels,
-                                product: pro
+                                lydo: 'Bị cấm bởi người bán sản phẩm.'
                             });
-                        } else {
-                            res.redirect('/home');
+                        }
+                        else {
+                            product.loadHetHan(req.params.id)
+                            .then(function(row) {
+                                if (row.length > 0) {
+                                    res.render('product/cannotbid', {
+                                        layoutModels: res.locals.layoutModels,
+                                        lydo: 'Phiên đấu giá đã kết thúc.'
+                                    });
+                                } else {
+                                    product.loadProductbyId(req.params.id)
+                                    .then(function(pro) {
+                                        if (pro) {
+                                            res.render('product/bid', {
+                                                layoutModels: res.locals.layoutModels,
+                                                product: pro
+                                            });
+                                        } else {
+                                            res.redirect('/home');
+                                        }
+                                    });
+                                }
+                            }); 
                         }
                     });
                 }
@@ -168,28 +190,59 @@ productRoute.get('/bid/:id', function(req, res) {
 });
 
 productRoute.post('/bid/:id', function(req, res) {
-
     var entity = {
-        giaphaitra: req.body.giaphaitra
-    }
+        giaphaitra: req.body.giaphaitra,
+        nguoigiugia: req.session.account.id
+    };
 
     product.insertTraGia(req.session.account.id, req.params.id, entity)
     .then(function() {
-        product.updateGiaHienTai(req.params.id, entity)
+
+        product.updateDatGiaHienTai(req.params.id, entity)
         .then(function() {
-            product.loadDetail(req.params.id, req.session.isLogged, req.session.account.id)
-            .then(function(pro) {
-                if (pro) {
-                    res.render('product/detail', {
-                        layoutModels: res.locals.layoutModels,
-                        product: pro.pro,
-                        watching: pro.watching
-                    });
-                } else {
-                    res.redirect('/home');
-                }
-            });
+            res.redirect('/product/detail/' + req.params.id);
         });
+    });
+});
+
+productRoute.get('/selling', function(req, res) {
+    if (req.session.isLogged === true) {
+        product.loadProductSelling(req.session.account.id)
+        .then(function(selling) {
+
+        });
+    } else {
+        res.render('account/login', {
+            layoutModels: res.locals.layoutModels,
+            showError: false,
+            errorMsg: ''
+        });
+    }
+});
+
+productRoute.get('/sold', function(req, res) {
+    if (req.session.isLogged === true) {
+        product.loadProductSold(req.session.account.id)
+        .then(function(sold) {
+            
+        });
+    } else {
+        res.render('account/login', {
+            layoutModels: res.locals.layoutModels,
+            showError: false,
+            errorMsg: ''
+        });
+    }
+});
+
+productRoute.get('/bidlog/:id', function(req, res) {
+    product.loadBidLogById(req.params.id)
+    .then(function(rows) {
+        res.render('product/bidlog', {
+            layoutModels: res.locals.layoutModels,
+            tragia: rows,
+            empty: rows.length === 0
+        });   
     });
 });
 

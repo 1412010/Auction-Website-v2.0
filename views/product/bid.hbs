@@ -4,7 +4,6 @@
 
 {{#section 'css'}}
     <link href="/assets/site.css" rel="stylesheet" />
-    <link href="/assets/bootstrap-3.3.7-dist/js/bootstrap.min.js" rel="stylesheet" />
     <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
     <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
     <script type="text/javascript" src="assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
@@ -131,8 +130,7 @@
                                             <form method="post" action="/product/bid/{{product.madaugia}}">
                                                 <div class="input-group" style="font-size:150%;">
                                                     Trả giá 
-                                                    <input type="text" id="giaphaitra" name="giaphaitra" value="{{add product.giahientai product.buocgia}}" disabled>
-                                                     VND
+                                                    <input type="text" class="btn btn-labeled" style="font-size:100%;width:70%;color:red;" id="giaphaitra" name="giaphaitra" value="{{add product.giahientai product.buocgia}}" readonly>
                                                      <br>
                                                      cho sản phẩm này?
                                                 </div>

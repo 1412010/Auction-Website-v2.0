@@ -1,5 +1,5 @@
 {{#section 'title'}}
-    Không được phép rả giá
+    Lịch sử đấu giá sản phẩm
 {{/section}}
 
 {{#section 'css'}}
@@ -43,10 +43,23 @@
     </div>
 {{/section}}
 
-{{> accountPanel}}
-
-<div style="font-size: 200%;">
-	Tài khoản này không được phép tham gia đấu giá.
-	<br>
-	Lý do: {{lydo}}
+{{> categoriesPanel}}
+{{#if empty}}
+    Sản phẩm này chưa được đấu giá
+{{else}}
+<div class="container col-md-9">
+    {{#each tragia}}
+        <form method="post">
+            <input type="text" name="gia" value="{{id}}" hidden>
+            <div class="row" style="font-size: 150%;margin-top: 1%;">
+                <div class="col-md-8">
+                    {{shortDateTime thoigiantra}} - {{hideRealUserName ten}} => {{formatNumber gia}}
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" class="btn btn-default" value="KICK">
+                </div>
+            </div>
+        </form>
+    {{/each}}
 </div>
+{{/if}}

@@ -1,11 +1,37 @@
 var express = require('express');
 var crypto = require('crypto');
 var moment = require('moment');
-
+var multer = require('multer');
+var fs = require('fs');
 var restrict = require('../middle-wares/restrict');
 var account = require('../models/account');
-
+var product = require('../models/product');
+var mkdirp = require('mkdirp');
+var mv = require('mv');
+var mime = require('mime');
+var srcdir = './public/Imgs/temp';
+var destdir = './public/Imgs/sp/';
 var accountRoute = express.Router();
+var name = ['main_thumbs', 'main', '1_thumbs', '1'];
+var count = -1;
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        mkdirp(srcdir, function(err) {
+            console.log('created temp folder');
+        });
+        cb(null, srcdir);
+    },
+    filename: function(req, file, cb) {
+        count++;
+        if (count > 3) {
+            count = 0;
+        }
+
+        cb(null, name[count] + '.' + mime.extension(file.mimetype));
+    }
+})
+
+var upload = multer({ storage: storage });
 
 accountRoute.get('/login', function(req, res) {
     if (req.session.isLogged === true) {
@@ -39,7 +65,7 @@ accountRoute.post('/login', function(req, res) {
                     errorMsg: 'Thông tin đăng nhập không đúng.'
                 });
             } else {
-                account.dob = moment(account.dob, 'YYYY-MM-DD HH:mm').format('DD-MM-YYYY');
+                account.dob = moment(account.dob, 'YYYY-MM-DDTHH:mm').format('DD-MM-YYYY');
                 req.session.isLogged = true;
                 req.session.account = account;
                 //req.session.cart = [];
@@ -79,7 +105,7 @@ accountRoute.get('/register', function(req, res) {
 accountRoute.post('/register', function(req, res) {
 
     var ePWD = crypto.createHash('md5').update(req.body.rawPWD).digest('hex');
-    var nDOB = moment(req.body.dob, 'dd/mm/yyyy').format('YYYY-MM-DDTHH:mm');
+    var nDOB = moment(req.body.dob, 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm');
     var ngender = req.body.radioGender;
     var entity = {
         //username: req.body.username,
@@ -163,6 +189,66 @@ accountRoute.post('/changePassword', restrict, function(req, res) {
             });
         }
 
+    });
+});
+
+accountRoute.get('/watching', restrict, function(req, res) {
+    account.getWatchingList(res.locals.layoutModels.account.id).then(function(rows) {
+        console.log(rows);
+        res.render('account/watchingList', {
+            layoutModels: res.locals.layoutModels,
+            isEmpty: rows.length > 0 ? false : true,
+            rows: rows
+        });
+    });
+});
+
+accountRoute.get('/newAuction', restrict, function(req, res) {
+    account.isPermittedToSell(res.locals.layoutModels.account.id).then(function(result) {
+        res.render('account/newAuction', {
+            isPermitted: result,
+            isSucceeded: false, 
+            layoutModels: res.locals.layoutModels
+        });
+    });
+});
+
+accountRoute.post('/newAuction', upload.array('hinhanh', 12), function(req, res) {
+    console.log(req.body.giamuangay);
+    var entity = {
+        tensp: req.body.ten,
+        loaisp: req.body.loaisp,
+        tgbatdau: moment(req.body.tgbatdau, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+        tgketthuc: moment(req.body.tgketthuc, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+        giakhoidiem: req.body.giakhoidiem,
+        buocgia: req.body.buocgia,
+        giamuangay: req.body.giamuangay == "" ? 'null' : req.body.giamuangay,
+        nguoiban: res.locals.layoutModels.account.id,
+        mota: req.body.motangangon,
+        thongtin: req.body.motachitiet,
+        cogiahan: req.body.tudonggiahan
+    };
+    console.log(entity);
+    product.newProduct(entity).then(function(rowid) {
+        console.log(rowid);
+        console.log('upload successfullly');
+        mv(srcdir, './public/Imgs/sp/' + rowid, { mkdirp: true }, function(err) {
+            console.log('move successfully');
+        });
+        res.render('account/newAuction', {
+            isPermitted: true,
+            isSucceeded: true, 
+            layoutModels: res.locals.layoutModels
+        });
+    });
+
+
+});
+
+accountRoute.get('/', restrict, function(req, res) {
+
+    res.render('account/profile', {
+        layoutModels: res.locals.layoutModels
     });
 });
 

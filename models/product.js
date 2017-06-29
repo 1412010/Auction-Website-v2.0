@@ -303,3 +303,49 @@ exports.searchProduct = function(word, cat, orderBy, limit, offset) {
  
     return deferred.promise;
 }
+
+exports.insertCamDauGia = function(tk, sp) {
+    var deferred = Q.defer();
+    var sql = 'insert into camdaugia values("' + sp + '", "' + tk + '")';
+    db.insert(sql).then(function(insertId) {
+        deferred.resolve(insertId);
+    });
+
+    return deferred.promise;
+}
+
+exports.deleteTraGia = function(tk, sp) {
+    var deferred = Q.defer();
+
+    var sql = 'delete from tragia where nguoitragia = ' + tk + ' and sanpham = ' + sp;
+    db.delete(sql).then(function(affectedRows) {
+        deferred.resolve(affectedRows);
+    });
+
+    return deferred.promise;
+}
+
+exports.updateNguoiGiuGia = function(tk, sp, gia) {
+    var deferred = Q.defer();
+
+    var sql = 'update sanpham set giahientai = ' + gia + ', nguoigiugia = ' + tk + ' where madaugia = ' + idsanpham;
+    db.update(sql).then(function(changedRows) {
+        deferred.resolve(changedRows);
+    });
+
+    return deferred.promise;
+}
+
+exports.loadTraGia = function(tk, sp) {
+    var deferred = Q.defer();
+    var sql = 'select * from tragia where sanpham = '+ sp + ' and nguoitragia = ' + tk + ' order by gia desc';
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows[0]);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}

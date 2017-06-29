@@ -14,36 +14,30 @@
         <div class="col-md-7" style="display:flex;align-items:center;">
             <!-- Khung search -->
             <!--<form class="form-inline" style="display:table-cell;text-align:center;vertical-align:middle;">-->
-            <div class="input-group col-md-11">
-                <!-- Dropdown -->
-                <div class="input-group-btn search-panel">
-                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#EDEEF2">
-                        <span id="search-concept">Tất cả</span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#0">Tất cả</a></li>
-                        <li><a href="#1">Dụng cụ thể thao</a></li>
-                        <li><a href="#2">Điện gia dụng - điện lạnh</a></li>
-                        <li><a href="#3">Điện thoại - máy tính bảng</a></li>
-                        <li><a href="#4">Đồng hồ - phụ kiện</a></li>
-                        <li><a href="#5">Laptop - thiết bị IT</a></li>
-                        <li><a href="#6">Máy ảnh - quay phim</a></li>
-                        <li><a href="#7">Phụ kiện - thiết bị số</a></li>
-                        <li><a href="#8">Sách - báo - tạp chí</a></li>
-                        <li><a href="#9">Thời trang</a></li>
-                        <li><a href="#10">Tivi - thiết bị nghe nhìn</a></li>
-                        <li><a href="#11">Truyện tranh - đồ chơi</a></li>
-                    </ul>
-                </div>
-                <!-- Textbox search -->
-                <input type="text" placeholder="Tìm kiếm" class="form-control" />
-                <input type="hidden" name="search-param" value="0" id="search-param">
-                <span class="input-group-btn">
+            <form method="get" action="/search" autocomplete="false" id="searchForm">
+                <div class="input-group col-md-11">
+                    <!-- Dropdown -->
+                    <div class="input-group-btn search-panel">
+                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:#EDEEF2">
+                            <span id="search-concept">Tất cả</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#danhmuc">Tất cả</a></li>
+                            {{#each layoutModels.categories }}
+                                <li><a href="#{{id}}">{{tendanhmuc}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    <!-- Textbox search -->
+                    <input type="text" placeholder="Tìm kiếm" class="form-control inputtext" name="word"/>
+                    <input type="hidden" name="cat" value="danhmuc" id="search-param">
+                    <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
-                </button>
-                </span>
-            </div>
+                    </button>
+                    </span>
+                </div>
+            </form>
             <!--</form>-->
         </div>
         <!-- /Khung search -->

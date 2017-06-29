@@ -396,3 +396,17 @@ exports.updateDanhGiaNguoiMua = function(entity) {
     });
     return deferred.promise;
 }
+
+exports.loadAccountbyId = function(id) {
+    var deferred = Q.defer();
+    var sql = 'select * from taikhoan where id = ' + id;
+    db.load(sql).then(function(rows) {
+        if (rows) {
+            deferred.resolve(rows[0]);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}

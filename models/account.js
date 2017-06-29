@@ -323,3 +323,76 @@ exports.getSoldList = function(id) {
     });
     return deferred.promise;
 }
+exports.insertNewPer = function(id) {
+    var deferred = Q.defer();
+    var date = moment().format('YYYY-MM-DD HH:mm');
+    var entity = {
+        id: id,
+        date: date
+    };
+
+    var sql = mustache.render('insert xinduocban(nguoixin, thoigianxin) values( {{id}},"{{date}}" )', entity);
+    console.log(sql);
+    db.insert(sql).then(function(insertId) {
+        deferred.resolve(insertId);
+    });
+    return deferred.promise;
+}
+
+exports.daDanhGiaNguoiBan = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('select * from ketquadaugia where sanpham = {{idPro}} and ngmuanhanxet is null', entity);
+    console.log(sql);
+    db.load(sql).then(function(rows) {
+        if (rows.length > 0)
+        {
+            deferred.resolve(false);
+        }
+        else
+        {
+            deferred.resolve(true);
+        }
+    });
+    return deferred.promise;
+}
+
+exports.daDanhGiaNguoiMua = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('select * from ketquadaugia where sanpham = {{idPro}} and ngbannhanxet is null', entity);
+    console.log(sql);
+    db.load(sql).then(function(rows) {
+        if (rows.length > 0)
+        {
+            deferred.resolve(false);
+        }
+        else
+        {
+            deferred.resolve(true);
+        }
+    });
+    return deferred.promise;
+}
+
+exports.updateDanhGiaNguoiBan = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('update ketquadaugia set ngmuanhanxet = "{{nx}}", ngmuacongdiem={{diem}} where sanpham = {{idPro}}', entity);
+    console.log(sql);
+    db.update(sql).then(function(changedRows) {
+        deferred.resolve(changedRows);
+    });
+    return deferred.promise;
+}
+
+exports.updateDanhGiaNguoiMua = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('update ketquadaugia set ngbannhanxet = "{{nx}}", ngbancongdiem={{diem}} where sanpham = {{idPro}}', entity);
+    console.log(sql);
+    db.update(sql).then(function(changedRows) {
+        deferred.resolve(changedRows);
+    });
+    return deferred.promise;
+}

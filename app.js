@@ -71,7 +71,7 @@ app.engine('hbs', exphbs({
                 string += " phút";
             }
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-            return string;
+            return string.substring(0, 14);
         },
         sub: function(i1, i2) {
             var i = +i1 - +i2;

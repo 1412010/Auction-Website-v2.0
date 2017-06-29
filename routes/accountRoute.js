@@ -264,4 +264,28 @@ accountRoute.get('/', restrict, function(req, res) {
     });
 });
 
+accountRoute.get('/ratedetail', restrict, function(req, res) {
+    account.getRateDetail(res.locals.layoutModels.account.id).then(function(data) {
+        //console.log(data)
+        var nrate = 0
+        if (data.total === 0)
+        {
+            
+        }
+        else
+        {
+            nrate = res.locals.layoutModels.account.positivepoint/(res.locals.layoutModels.account.positivepoint + res.locals.layoutModels.account.negativepoint) * 100;
+            nrate = nrate.toFixed(2);
+        }
+        console.log(data.list);
+        console.log(nrate);
+        res.render('account/ratedetail', {
+            list: data.list,
+            isEmpty: data.total === 0,
+            rate: nrate,
+            layoutModels: res.locals.layoutModels
+        });
+    });
+});
+
 module.exports = accountRoute;

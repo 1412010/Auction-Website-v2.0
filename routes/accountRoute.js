@@ -268,13 +268,10 @@ accountRoute.get('/ratedetail', restrict, function(req, res) {
     account.getRateDetail(res.locals.layoutModels.account.id).then(function(data) {
         //console.log(data)
         var nrate = 0
-        if (data.total === 0)
-        {
-            
-        }
-        else
-        {
-            nrate = res.locals.layoutModels.account.positivepoint/(res.locals.layoutModels.account.positivepoint + res.locals.layoutModels.account.negativepoint) * 100;
+        if (data.total === 0) {
+
+        } else {
+            nrate = res.locals.layoutModels.account.positivepoint / (res.locals.layoutModels.account.positivepoint + res.locals.layoutModels.account.negativepoint) * 100;
             nrate = nrate.toFixed(2);
         }
         console.log(data.list);
@@ -290,43 +287,137 @@ accountRoute.get('/ratedetail', restrict, function(req, res) {
 
 accountRoute.get('/bidingList', restrict, function(req, res) {
     account.getBidingList(res.locals.layoutModels.account.id).then(function(rows) {
-       res.render('account/bidingList', {
-           list: rows,
-           isEmpty: rows.length === 0,
-           layoutModels: res.locals.layoutModels
-       });
+        res.render('account/bidingList', {
+            list: rows,
+            isEmpty: rows.length === 0,
+            layoutModels: res.locals.layoutModels
+        });
     });
 });
 
 accountRoute.get('/wonList', restrict, function(req, res) {
     account.getWonList(res.locals.layoutModels.account.id).then(function(rows) {
-       res.render('account/wonList', {
-           list: rows,
-           isEmpty: rows.length === 0,
-           layoutModels: res.locals.layoutModels
-       });
+        res.render('account/wonList', {
+            list: rows,
+            isEmpty: rows.length === 0,
+            layoutModels: res.locals.layoutModels
+        });
     });
 });
 
 accountRoute.get('/sellingList', restrict, function(req, res) {
     account.getSellingList(res.locals.layoutModels.account.id).then(function(rows) {
-    //console.log(rows.length);
-       res.render('account/sellingList', {
-           list: rows,
-           isEmpty: rows.length === 0,
-           layoutModels: res.locals.layoutModels
-       });
+        //console.log(rows.length);
+        res.render('account/sellingList', {
+            list: rows,
+            isEmpty: rows.length === 0,
+            layoutModels: res.locals.layoutModels
+        });
     });
 });
 
 accountRoute.get('/soldList', restrict, function(req, res) {
     account.getSoldList(res.locals.layoutModels.account.id).then(function(rows) {
 
-       res.render('account/soldList', {
-           list: rows,
-           isEmpty: rows.length === 0,
-           layoutModels: res.locals.layoutModels
-       });
+        res.render('account/soldList', {
+            list: rows,
+            isEmpty: rows.length === 0,
+            layoutModels: res.locals.layoutModels
+        });
+    });
+});
+
+accountRoute.get('/newPermit', restrict, function(req, res) {
+    res.render('account/newPermit', {
+        layoutModels: res.locals.layoutModels,
+        showError: false,
+        errorMsg: ''
+    });
+});
+
+accountRoute.post('/newPermit', restrict, function(req, res) {
+
+    account.insertNewPer(res.locals.layoutModels.account.id).then(function(insertId) {
+        console.log(insertId);
+        res.redirect('/account/profile');
+    });
+
+});
+
+accountRoute.get('/rateSeller', restrict, function(req, res) {
+    console.log(req.query.id);
+    res.render('account/rateSeller', {
+        layoutModels: res.locals.layoutModels,
+        showError: false,
+        errorMsg: ''
+    });
+});
+
+accountRoute.post('/rateSeller', restrict, function(req, res) {
+    console.log(req.query.idPro);
+    console.log(req.body.nx);
+    console.log(req.body.diem);
+    console.log(req.query.idAcc)
+    var entity = {
+        nx: req.body.nx,
+        diem: req.body.diem,
+        idPro: req.query.idPro,
+        idSeller: req.query.idAcc,
+        idBuyer: res.locals.layoutModels.account.id
+    };
+    account.daDanhGiaNguoiBan(entity).then(function(result) {
+        if (result) {
+            res.render('account/rateSeller', {
+                layoutModels: res.locals.layoutModels,
+                showError: true,
+                errorMsg: 'Bạn không thể đánh giá cho sản phẩm này (đã đánh giá trước đây)!'
+            });
+        } else {
+            account.updateDanhGiaNguoiBan(entity).then(function(changedRows) {
+                res.render('account/rateSeller', {
+                    layoutModels: res.locals.layoutModels,
+                    showError: true,
+                    errorMsg: 'Đánh giá thành công!'
+                });
+            });
+        }
+    });
+});
+
+accountRoute.get('/rateBuyer', restrict, function(req, res) {
+
+    res.render('account/rateBuyer', {
+        layoutModels: res.locals.layoutModels,
+        showError: false,
+        errorMsg: ''
+    });
+});
+
+accountRoute.post('/rateBuyer', restrict, function(req, res) {
+
+    var entity = {
+        nx: req.body.nx,
+        diem: req.body.diem,
+        idPro: req.query.idPro,
+        idSeller: res.locals.layoutModels.account.id,
+        idBuyer: req.query.idAcc
+    };
+    account.daDanhGiaNguoiMua(entity).then(function(result) {
+        if (result) {
+            res.render('account/rateBuyer', {
+                layoutModels: res.locals.layoutModels,
+                showError: true,
+                errorMsg: 'Bạn không thể đánh giá cho sản phẩm này (đã đánh giá trước đây)!'
+            });
+        } else {
+            account.updateDanhGiaNguoiMua(entity).then(function(changedRows) {
+                res.render('account/rateSeller', {
+                    layoutModels: res.locals.layoutModels,
+                    showError: true,
+                    errorMsg: 'Đánh giá thành công!'
+                });
+            });
+        }
     });
 });
 

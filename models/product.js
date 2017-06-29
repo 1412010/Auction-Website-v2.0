@@ -175,7 +175,36 @@ exports.updateGiaHienTai = function(idsanpham, entity) {
 
     return deferred.promise;
 }
+//hàm lấy danh sách sản phẩm dựa trên từ khóa, loại sản phẩm
+exports.searchProduct = function(word, cat, orderBy, limit, offset) {
+    var deferred = Q.defer();
 
+    var entity = {
+        limit: limit,
+        offset: offset,
+        orderBy: orderBy,
+        word: word, 
+        cat: cat
+    };
+    var promises = [];
+    
+    var sql_1 = mustache.render('SELECT COUNT(*) as total from sanpham sp, danhmuc dm, taikhoan tk where sp.tensp LIKE CONCAT("%","{{word}}" ,"%") and sp.danhmuc={{cat}} and dm.id = sp.danhmuc and sp.manguoiban = tk.id ORDER BY {{orderBy}}', entity);
+    promises.push(db.load(sql_1));
+
+    var sql_2 = mustache.render('SELECT sp.*, dm.tendanhmuc, tk.ten from sanpham sp, danhmuc dm, taikhoan tk where sp.tensp LIKE CONCAT("%","{{word}}" ,"%") and sp.danhmuc={{cat}} and dm.id = sp.danhmuc and sp.manguoiban = tk.id ORDER BY {{orderBy}} LIMIT {{limit}} OFFSET {{offset}}', entity);
+    promises.push(db.load(sql_2));
+
+    Q.all(promises).spread(function(totalRow, rows) {
+        var data = {
+            total: totalRow[0].total,
+            rows: rows
+        }
+        deferred.resolve(data);
+    });
+
+
+    return deferred.promise;
+}
 // exports.makeCartItem = function(id, q) {
 
 //     var deferred = Q.defer();

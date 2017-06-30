@@ -1,0 +1,156 @@
+{{#section 'title'}}
+    Sửa thông tin sản phẩm
+{{/section}}
+{{#section 'breadcrumbs'}}
+    <div class="row container-fluid">
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/account">Tài khoản</a></li>
+            <li class="active"><span>Sửa thông tin sản phẩm</span></li>
+        </ol>
+        <!-- /Đường dẫn -->
+    </div>
+{{/section}}
+{{#section 'css'}}
+    <link rel="stylesheet" type="text/css" href="/assets/css/fileinput.min.css">
+    <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <style type="text/css">
+    .btn-account i {
+        margin-top: 2%;
+        font-size: 30px;
+    }
+    
+    .btn-account span {
+        padding-left: 15px;
+        padding-right: 5px;
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        font-size: 130%;
+    }
+    
+    .btn-account span small {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+    }
+    </style>
+{{/section}}
+{{#section 'js'}}
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/assets/js/plugins/piexif.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/sortable.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/purify.min.js"></script>>
+    <script type="text/javascript" src="/assets/js/fileinput.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/assets/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea#motachitiet',
+        theme: 'modern',
+
+        plugins: [
+            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen',
+            'insertdatetime media nonbreaking save table contextmenu directionality',
+            'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc help'
+        ],
+        toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor emoticons | codesample help',
+        image_advtab: true
+    });
+    $('.form_datetime').datetimepicker({
+        format: "dd-mm-yyyy Lúc hh:ii",
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: 1,
+        forceParse: 0,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 5
+    });
+
+    function recaptchaCallback() {
+        $('#hiddenRecaptcha').valid();
+    };
+    $(document).on('ready', function() {
+        $('#input-42').fileinput({
+            maxFileCount: 2,
+            allowedFileExtensions: ["jpg", "gif", "png", "txt"]
+        });
+    });
+    $(document).ready(function() {
+        $('#input-44').fileinput({
+            uploadUrl: '/file-upload-batch/2',
+            maxFilePreviewSize: 10240
+        });
+    });
+    </script>
+{{/section}}
+{{> accountPanel this}}
+<div class="col-md-9">
+    <form class="form-horizontal" method="get" action="/account/edit" id="formInfo" enctype="multipart/form-data">
+        <div class="panel panel-default" style="border-color: #189eff;">
+            <div class="panel-heading" style="background-color: #189eff; color:#fff">
+                Đăng bán sản phẩm mới
+            </div>
+            {{#if isPermitted}}
+                <div class="panel-body">
+                    <!-- panel body -->
+                    <div class="col-sm-12">
+                        {{#if isSucceeded}}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Hoàn tất!</strong> Sản phẩm đã được đăng bán thành công.
+                            </div>
+                        {{/if}}
+                        <input type="hidden" name="madaugia" value="{{madaugia}}">
+                        
+                        <div class="form-group">
+                            <!-- Mô tả chi tiết -->
+                            <label class="control-label col-sm-2" for="motachitiet">Mô tả chi tiết</label>
+                            <div class="col-sm-10">
+                                <textarea id="motachitiet" placeholder="Mô tả chi tiết" rows="10" name="motachitiet">
+                                {{{row.thongtin}}}
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <!-- Tự động gia hạn -->
+                            <label class="control-label col-sm-2" for="mota">Tự động gia hạn</label>
+                            <div class="col-sm-10">
+                                <label class="radio-inline">
+                                    <input type="radio" name="tudonggiahan" id="yes" value="1" disabled>Có
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="tudonggiahan" checked id="no" value="0" disabled>Không
+                                </label>
+                            </div>
+                        </div>
+                         {{#if isSucceeded}}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Hoàn tất!</strong> Sản phẩm đã được đăng bán thành công.
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-footer">
+                    <div class="col-sm-offset-3">
+                        <button type="submit" class="btn btn-success" style="margin-right: 10px">Xác nhận</button>
+                        <button type="button" class="btn btn-default">Hủy</button>
+                    </div>
+                </div>
+            {{else}}
+                <div class="panel-body">
+                    <!-- panel body -->
+                    <div class="col-sm-12">
+                        <h3>Tài khoản này chưa được cấp hoặc đã hết hạn quyền được bán.</span></h3>
+                        <h3><a href="/account/newPermit">Xin phép được bán tại đây.</a></h3>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </form>
+</div>

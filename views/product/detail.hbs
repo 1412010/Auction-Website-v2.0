@@ -96,10 +96,17 @@
                     </div>
                     <div class="col-md-4">
                         <form method="post">
-                            <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:right;">
+                            <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:right;width:80%;">
                                 <span class="glyphicon glyphicon-star" style="color:yellow;font-size:150%;"></span> &nbsp
                                 <span style="font-weight:bold;">
                                     {{watching}}
+                                </span>
+                            </button>
+                        </form>
+                        <form method="get" action="/product/bidlog/{{product.madaugia}}">
+                            <button class="btn btn-default" style="background-color:#4784FF;color:#fff;display:flex;align-items:right;width:80%;margin-top:1%;">
+                                <span style="font-weight:bold;">
+                                    Lịch sử đấu giá
                                 </span>
                             </button>
                         </form>

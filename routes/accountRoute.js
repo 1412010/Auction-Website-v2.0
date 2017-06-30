@@ -277,13 +277,23 @@ accountRoute.get('/editAuction', restrict, function(req, res) {
     });
 });
 
-accountRoute.get('/edit', restrict, function(req, res) {
-    console.log(req.body.motachitiet);
+accountRoute.post('/editAuction/:id', restrict, function(req, res) {
+    console.log(req.params.id);
+    console.log(req.body.tudonggiahan);
+    var now = moment().format('D/M/YYYY - HH:mm');
     var entity = {
-        thongtin: req.query.motangangon,
-        id: req.query.madaugia
+        thongtin: "<p>Cập nhật " + now + ":</p><hr>" + req.body.motachitiet,
+        id: req.body.madaugia
     };
     console.log(entity);
+    product.updateProduct(entity).then(function(rowid){
+        res.render('account/editAuction', {
+                layoutModels: res.locals.layoutModels,
+                isPermitted: true, 
+                isSucceeded: true
+        });
+    });
+
 });
 
 accountRoute.get('/', restrict, function(req, res) {

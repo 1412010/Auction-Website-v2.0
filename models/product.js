@@ -2,6 +2,7 @@ var Q = require('q');
 var mustache = require('mustache');
 var db = require('../app-helpers/dbHelper');
 
+
 exports.newProduct = function(entity) {
     var deferred = Q.defer();
 
@@ -10,9 +11,10 @@ exports.newProduct = function(entity) {
     db.insert(sql).then(function(rowid) {
         deferred.resolve(rowid);
     });
-
+ 
     return deferred.promise;
-}
+ }
+ 
 
 exports.loadPageByCat = function(id, limit, offset) {
 
@@ -308,10 +310,10 @@ exports.deleteTraGia = function(tk, sp) {
     return deferred.promise;
 }
 
-exports.updateNguoiGiuGia = function(tk, zsp, gia) {
+exports.updateNguoiGiuGia = function(tk, sp, gia) {
     var deferred = Q.defer();
 
-    var sql = 'update sanpham set giahientai = ' + gia + ', nguoigiugia = ' + tk + ' where madaugia = ' + idsanpham;
+    var sql = 'update sanpham set giahientai = ' + gia + ', nguoigiugia = ' + tk + ' where madaugia = ' + sp;
     db.update(sql).then(function(changedRows) {
         deferred.resolve(changedRows);
     });
@@ -336,7 +338,7 @@ exports.loadTraGia = function(sp) {
 exports.updateSanPhamMuaNgay = function(tk, sp) {
     var deferred = Q.defer();
 
-    var sql = 'update sanpham set giahientai = giamuangay, nguoigiugia = ' + tk + ' where madaugia = ' + idsanpham;
+    var sql = 'update sanpham set giahientai = giamuangay, nguoigiugia = ' + tk + ' where madaugia = ' + sp;
     db.update(sql).then(function(changedRows) {
         deferred.resolve(changedRows);
     });

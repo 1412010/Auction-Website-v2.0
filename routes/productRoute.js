@@ -269,6 +269,80 @@ productRoute.post('/bidlog/:id', function(req, res) {
     });
 });
 
+productRoute.post('/buynow/:id', function(req, res) {
+    if (req.session.isLogged === true) {
+        account.loadAccountbyId(req.session.account.id)
+        .then(function(acc) {
+            if (acc) {
+                var cong = acc.diemcong;
+                var tru = acc.diemtru;
+                console.log(cong);
+                console.log(tru);
+                console.log(cong / (cong + tru) <= 0.8);
+                if ((cong !== 0 || tru !== 0) && (cong / (cong + tru) <= 0.8)) {
+                    res.render('product/cannotbid', {
+                        layoutModels: res.locals.layoutModels,
+                        lydo:" Điểm cộng thấp hơn 80%."
+                    });
+                } else {
+                    product.loadCamDauGia(req.session.account.id, req.params.id)
+                    .then(function(row) {
+                        if (row.length > 0) {
+                            res.render('product/cannotbid', {
+                                layoutModels: res.locals.layoutModels,
+                                lydo: 'Bị cấm bởi người bán sản phẩm.'
+                            });
+                        }
+                        else {
+                            product.loadHetHan(req.params.id)
+                            .then(function(row) {
+                                if (row.length > 0) {
+                                    res.render('product/cannotbid', {
+                                        layoutModels: res.locals.layoutModels,
+                                        lydo: 'Phiên đấu giá đã kết thúc.'
+                                    });
+                                } else {
+                                    product.updateSanPhamMuaNgay(req.session.account.id, req.params.id)
+                                    .then(function() {
+                                        product.loadProductbyId(req.params.id)
+                                        .then(function(pro) {
+                                            if (pro) {
+                                                
+                                                var entity = {
+                                                    giaphaitra: pro.giamuangay,
+                                                    nguoigiugia: req.session.account.id
+                                                };
 
+                                                product.insertTraGia(req.session.account.id, req.params.id, entity)
+                                                .then(function() {
+
+                                                    product.updateDatGiaHienTai(req.params.id, entity)
+                                                    .then(function() {
+                                                        res.redirect('/product/detail/' + req.params.id);
+                                                    });
+                                                });
+
+                                            } else {
+                                                res.redirect('/home');
+                                            }
+                                        });
+                                    });
+                                }
+                            }); 
+                        }
+                    });
+                }
+            } else {
+                res.redirect('/home');
+            }                      
+        });
+    } else {
+        res.render('account/login', {
+            layoutModels: res.locals.layoutModels,
+            showError: false,
+            errorMsg: ''
+        });
+    }
+});
 
 module.exports = productRoute;

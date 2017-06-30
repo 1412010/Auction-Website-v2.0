@@ -320,3 +320,14 @@ exports.loadTraGia = function(sp) {
 
     return deferred.promise;
 }
+
+exports.updateSanPhamMuaNgay = function(tk, sp) {
+    var deferred = Q.defer();
+
+    var sql = 'update sanpham set giahientai = giamuangay, nguoigiugia = ' + tk + ' where madaugia = ' + idsanpham;
+    db.update(sql).then(function(changedRows) {
+        deferred.resolve(changedRows);
+    });
+
+    return deferred.promise;
+}

@@ -248,7 +248,8 @@ productRoute.get('/bidlog/:id', function(req, res) {
         res.render('product/bidlog', {
             layoutModels: res.locals.layoutModels,
             tragia: rows,
-            empty: rows.length === 0
+            empty: rows.length === 0,
+			idsp: req.params.id
         });   
     });
 });

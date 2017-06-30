@@ -2,6 +2,18 @@ var Q = require('q');
 var mustache = require('mustache');
 var db = require('../app-helpers/dbHelper');
 
+exports.newProduct = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('INSERT INTO sanpham (tensp, giahientai, giamuangay, tgbatdau, tgketthuc, trangthai, thongtin,    manguoiban, danhmuc, mota, giakhoidiem, buocgia,tudonggiahan )VALUES ("{{tensp}}", {{giakhoidiem}}, {{giamuangay}}, "{{tgbatdau}}", "{{tgketthuc}}", 1, "{{{thongtin}}}", {{nguoiban}}, {{loaisp}}, "{{mota}}", {{giakhoidiem}}, {{buocgia}}, {{cogiahan}})', entity);
+
+    db.insert(sql).then(function(rowid) {
+        deferred.resolve(rowid);
+    });
+
+    return deferred.promise;
+}
+
 exports.loadPageByCat = function(id, limit, offset) {
 
     var deferred = Q.defer();

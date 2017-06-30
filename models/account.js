@@ -382,7 +382,18 @@ exports.updateDanhGiaNguoiBan = function(entity) {
     var sql = mustache.render('update ketquadaugia set ngmuanhanxet = "{{nx}}", ngmuacongdiem={{diem}} where sanpham = {{idPro}}', entity);
     console.log(sql);
     db.update(sql).then(function(changedRows) {
-        deferred.resolve(changedRows);
+        if(entity.diem > +0)
+        {
+            var sql1 = mustache.render('update taikhoan set diemcong = diemcong + {{diem}} where id = {{idSeller}}', entity)
+        }
+        else
+        {
+            var sql1 = mustache.render('update taikhoan set diemtru = diemtru + 1 where id = {{idSeller}}', entity)
+        }
+        console.log(sql1);
+        db.update(sql1).then(function(changedRows1){
+            deferred.resolve(changedRows1);
+        });
     });
     return deferred.promise;
 }
@@ -393,7 +404,18 @@ exports.updateDanhGiaNguoiMua = function(entity) {
     var sql = mustache.render('update ketquadaugia set ngbannhanxet = "{{nx}}", ngbancongdiem={{diem}} where sanpham = {{idPro}}', entity);
     console.log(sql);
     db.update(sql).then(function(changedRows) {
-        deferred.resolve(changedRows);
+         if(entity.diem > +0)
+        {
+            var sql1 = mustache.render('update taikhoan set diemcong = diemcong + {{diem}} where id = {{idBuyer}}', entity)
+        }
+        else
+        {
+            var sql1 = mustache.render('update taikhoan set diemtru = diemtru + 1 where id = {{idBuyer}}', entity)
+        }
+        console.log(sql1);
+        db.update(sql1).then(function(changedRows1){
+            deferred.resolve(changedRows1);
+        });
     });
     return deferred.promise;
 }

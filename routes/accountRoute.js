@@ -257,6 +257,35 @@ accountRoute.post('/newAuction', upload.array('hinhanh', 12), function(req, res)
 
 });
 
+accountRoute.get('/editAuction', restrict, function(req, res) {
+    console.log("editAuction");
+    product.loadProductbyId(req.query.id).then(function(row) {
+        if (row.manguoiban != res.locals.layoutModels.account.id) {
+            res.render('account/editAuction', {
+                layoutModels: res.locals.layoutModels,
+                isPermitted: false, 
+                isSucceeded: false
+            });
+        } else {
+            res.render('account/editAuction', {
+                layoutModels: res.locals.layoutModels,
+                isPermitted: true, 
+                isSucceeded: false,
+                row: row
+            });
+        }
+    });
+});
+
+accountRoute.get('/edit', restrict, function(req, res) {
+    console.log(req.body.motachitiet);
+    var entity = {
+        thongtin: req.query.motangangon,
+        id: req.query.madaugia
+    };
+    console.log(entity);
+});
+
 accountRoute.get('/', restrict, function(req, res) {
 
     res.render('account/profile', {

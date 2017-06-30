@@ -205,36 +205,6 @@ productRoute.post('/bid/:id', function(req, res) {
     });
 });
 
-productRoute.get('/selling', function(req, res) {
-    if (req.session.isLogged === true) {
-        product.loadProductSelling(req.session.account.id)
-        .then(function(selling) {
-
-        });
-    } else {
-        res.render('account/login', {
-            layoutModels: res.locals.layoutModels,
-            showError: false,
-            errorMsg: ''
-        });
-    }
-});
-
-productRoute.get('/sold', function(req, res) {
-    if (req.session.isLogged === true) {
-        product.loadProductSold(req.session.account.id)
-        .then(function(sold) {
-            
-        });
-    } else {
-        res.render('account/login', {
-            layoutModels: res.locals.layoutModels,
-            showError: false,
-            errorMsg: ''
-        });
-    }
-});
-
 productRoute.get('/bidlog/:id', function(req, res) {
     product.loadBidLogById(req.params.id)
     .then(function(rows) {
@@ -251,19 +221,17 @@ productRoute.post('/bidlog/:id', function(req, res) {
     .then(function() {
         product.insertCamDauGia(req.body.gia, req.params.id)
         .then(function() {
-            product.loadTraGia(req.body.gia, req.params.id)
+            product.loadTraGia(req.params.id)
             .then(function(row) {
-                product.updateNguoiGiuGia(req.body.gia, req.params.id, row.gia)
+                product.updateNguoiGiuGia(row.nguoitragia, req.params.id, row.gia)
                 .then(function() {
-                    res.redirect('bidlog/' + req.params.id);
+                    res.redirect('/product/bidlog/' + req.params.id);
                 });
             });
         });
     });
 });
 
-productRoute.post('/buynow/:id', function(req, res) {
 
-});
 
 module.exports = productRoute;

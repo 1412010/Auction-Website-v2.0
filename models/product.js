@@ -94,6 +94,23 @@ exports.loadProductbyId = function(id) {
     return deferred.promise;
 }
 
+exports.loadSellerByProductId = function(id) {
+    var deferred = Q.defer();
+    var entity = {
+        id: id
+    };
+    var sql = mustache.render('SELECT sp.madaugia, tk.* FROM sanpham sp, taikhoan tk WHERE sp.manguoiban=tk.id and sp.madaugia={{id}}', entity);
+    db.load(sql).then(function(rows) {
+        if (rows.length > 0) {
+            deferred.resolve(rows[0]);
+        } else {
+            deferred.resolve(null);
+        }
+    });
+
+    return deferred.promise;
+}
+
 exports.loadTopRaGia = function() {
     var deferred = Q.defer();
     var sql = 'select * from sanpham where tgketthuc > now() order by solandaugia desc limit 6';

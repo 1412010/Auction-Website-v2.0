@@ -196,13 +196,50 @@ productRoute.post('/bid/:id', function(req, res) {
     };
 
     product.insertTraGia(req.session.account.id, req.params.id, entity)
-    .then(function() {
-
-        product.updateDatGiaHienTai(req.params.id, entity)
         .then(function() {
-            res.redirect('/product/detail/' + req.params.id);
+
+            product.loadProductbyId(req.params.id).then(function(row) {
+                //Gửi email xác nhận cho người mua đã trả giá thành công
+                var mailToBidder = {
+                    from: "Web Auction <myauctionwebapp@gmail.com>", // sender address
+                    to: res.locals.layoutModels.account.email, // list of receivers
+                    subject: "Thông báo trả giá thành công", // Subject line
+                    text: "Bạn đã trả giá thành công cho sản phẩm " + row.tensp + " với giá là " + req.body.giaphaitra + " vnd.", // plaintext body
+                };
+                console.log(mailToBidder);
+                smtpTransport.sendMail(mailToBidder, function(error, response) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log("Message sent: " + response.message);
+                    }
+                });
+
+                //Gửi email thông báo có người trả giá cho người bán
+                product.loadSellerByProductId(req.params.id).then(function(rowSeller) {
+                    var mailToSeller = {
+                        from: "Web Auction <myauctionwebapp@gmail.com>", // sender address
+                        to: rowSeller.email, // list of receivers
+                        subject: "Thông báo sản phẩm đã được trả giá", // Subject line
+                        text: "Tài khoản " + res.locals.layoutModels.account.name + " vừa trả giá " + req.body.giaphaitra + " vnd cho sản phẩm " + row.tensp + " của bạn."
+                    };
+                    console.log(mailToSeller);
+                    smtpTransport.sendMail(mailToSeller, function(error, response) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log("Message sent: " + response.message);
+                        }
+                    });
+                });
+                smtpTransport.close();
+            });
+
+            product.updateDatGiaHienTai(req.params.id, entity)
+                .then(function() {
+                    res.redirect('/product/detail/' + req.params.id);
+                });
         });
-    });
 });
 
 productRoute.get('/bidlog/:id', function(req, res) {

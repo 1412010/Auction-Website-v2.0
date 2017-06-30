@@ -135,10 +135,12 @@
         <!-- Navigation bar -->
         <ul style="list-style:none;text-align:center;">
             <li style="width:10%;"><a href="/home">Trang chủ</a></li>
-            <li style="width:10%;"><a>Hot deal</a></li>
-            <li style="width:20%;"><a>Sản phẩm đang theo dõi</a></li>
-            <li style="width:10%;"><a>Đăng bán</a></li>
+            <li style="width:20%;"><a href="/account/watching">Sản phẩm đang theo dõi</a></li>
+            <li style="width:10%;"><a href="/account/newAuction">Đăng bán</a></li>
             <li style="width:10%;"><a href="/account/register">Đăng ký</a></li>
+            {{#isEqual layoutModels.account.permission 4}}
+             <li style="width:10%;"><a href="/manager/account">Quản trị</a></li>
+            {{/isEqual}}
         </ul>
     </div>
     <!-- /Navigation bar -->

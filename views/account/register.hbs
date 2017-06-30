@@ -1,20 +1,20 @@
-{{#section 'title'}} Đăng ký {{/section}} 
+{{#section 'title'}} Đăng ký {{/section}}
 {{#section 'css'}}
     <link href="/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/assets/css/bootstrap-social.css" rel="stylesheet" type="text/css" media="all" />
     <link rel="stylesheet" type="text/css" href="/assets/css/breadcrumbs.css">
     <link href="/assets/css/docs.css" rel="stylesheet">
     <script src='https://www.google.com/recaptcha/api.js'></script>
-<style type="text/css">
-label {
-    font-weight: normal !important;
-}
-</style>
-{{/section}} 
+    <style type="text/css">
+    label {
+        font-weight: normal !important;
+    }
+    </style>
+{{/section}}
 {{#section 'js'}}
-<script src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
-<script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<script type="text/javascript">
+    <script src="/assets/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript">
     $('.form_date').datetimepicker({
         //language:  'fr',
         weekStart: 1,
@@ -29,104 +29,104 @@ label {
     function recaptchaCallback() {
         $('#hiddenRecaptcha').valid();
     };
-$('#frmRegister').validate({
-    ignore: ".ignore",
-    rules: {
-        username: {
-            required: true
-        },
-        rawPWD: {
-            required: true,
-            minlength: 8
-        },
-        cPWD: {
-            equalTo: '#txtrawPWD'
-        },
-        name: {
-            required: true
-        },
-        email: {
-            required: true,
-            email: true
-        },
-        dob: {
-            required: true
-        },
+    $('#frmRegister').validate({
+        ignore: ".ignore",
+        rules: {
+            username: {
+                required: true
+            },
+            rawPWD: {
+                required: true,
+                minlength: 8
+            },
+            cPWD: {
+                equalTo: '#txtrawPWD'
+            },
+            name: {
+                required: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            dob: {
+                required: true
+            },
 
-        policy: {
-            required: true
-        },
+            policy: {
+                required: true
+            },
 
-        radioGender: {
-            required: true
-        },
+            radioGender: {
+                required: true
+            },
 
-         hiddenRecaptcha: {
-            required: function () {
-                 if (grecaptcha.getResponse() == '') {
+            hiddenRecaptcha: {
+                required: function() {
+                    if (grecaptcha.getResponse() == '') {
                         return true;
-                } else {
+                    } else {
                         return false;
+                    }
+
                 }
-
             }
-        }
 
-    },
-
-    messages: {
-        username: {
-            required: 'Vui lòng nhập username.'
-        },
-        rawPWD: {
-            required: 'Vui lòng nhập mật khẩu',
-            minlength: 'Mật khẩu phải dài ít nhất 8 ký tự'
-        },
-        cPWD: {
-            equalTo: 'Mật khẩu nhập lại chưa khớp'
-        },
-        name: {
-            required: 'Vui lòng nhập họ tên'
-        },
-        email: {
-            required: 'Vui lòng nhập email',
-            email: 'EMail không đúng định dạng'
-        },
-        dob: {
-            required: 'Vui lòng chọn ngày sinh'
         },
 
-         policy: {
-            required: 'Vui lòng đồng ý với điều khoản của web'
+        messages: {
+            username: {
+                required: 'Vui lòng nhập username.'
+            },
+            rawPWD: {
+                required: 'Vui lòng nhập mật khẩu',
+                minlength: 'Mật khẩu phải dài ít nhất 8 ký tự'
+            },
+            cPWD: {
+                equalTo: 'Mật khẩu nhập lại chưa khớp'
+            },
+            name: {
+                required: 'Vui lòng nhập họ tên'
+            },
+            email: {
+                required: 'Vui lòng nhập email',
+                email: 'EMail không đúng định dạng'
+            },
+            dob: {
+                required: 'Vui lòng chọn ngày sinh'
+            },
+
+            policy: {
+                required: 'Vui lòng đồng ý với điều khoản của web'
+            },
+
+            radioGender: {
+                required: 'Vui lòng chọn giới tính của bạn'
+            },
+            hiddenRecaptcha: {
+                required: 'Nhập capcha'
+            }
         },
 
-        radioGender: {
-            required: 'Vui lòng chọn giới tính của bạn'
+        errorElement: 'span',
+        errorClass: 'help-block',
+
+        highlight: function(element) {
+            $(element)
+                .closest('.form-group')
+                .addClass('has-error');
         },
-        hiddenRecaptcha:{
-            required: 'Nhập capcha'
-        }
-    },
 
-    errorElement: 'span',
-    errorClass: 'help-block',
+        success: function(label) {
+            $(label)
+                .closest('.form-group')
+                .removeClass('has-error');
 
-    highlight: function(element) {
-        $(element)
-            .closest('.form-group')
-            .addClass('has-error');
-    },
-
-    success: function(label) {
-        $(label)
-            .closest('.form-group')
-            .removeClass('has-error');
-
-        label.remove();
-    },
-});
-</script>
-{{/section}} 
+            label.remove();
+        },
+    });
+    </script>
+{{/section}}
 {{#section 'breadcrumbs'}}
     <div class="row container-fluid">
         <ol class="breadcrumb breadcrumb-arrow">
@@ -136,25 +136,23 @@ $('#frmRegister').validate({
         <!-- /Đường dẫn -->
     </div>
 {{/section}}
-
 {{> categoriesPanel this}}
 <div class="col-md-9">
     {{#if showError }}
-    <div class="alert alert-warning alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Warning!</strong> {{ errorMsg }}
-    </div>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> {{ errorMsg }}
+        </div>
     {{/if}}
     <div class="panel panel-default" style="border-color: #189eff;">
         <div class="panel-heading" style="background-color: #189eff;">
             <span class="panel-title">Đăng ký</span>
         </div>
         <form class="form-horizontal" method="post" action="" id="frmRegister">
-                    <!-- form -->
-        <div class="panel-body">
-            <!-- panel body -->
-            <div class="col-sm-8">
-                <form class="form-horizontal" method="post" action="" id="frmRegister">
+            <!-- form -->
+            <div class="panel-body">
+                <!-- panel body -->
+                <div class="col-sm-8">
                     <!-- form -->
                     <div class="form-group">
                         <!-- Tên tài khoản -->
@@ -178,11 +176,11 @@ $('#frmRegister').validate({
                         <label for="dtp_input2" class="col-sm-4 control-label">Ngày sinh*:</label>
                         <div class="col-sm-8">
                             <div class="input-group date form_date" data-date="" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" type="text" value="" readonly >
+                                <input class="form-control" type="text" value="" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
-                            <input type="hidden" id="dtp_input2" value="" name="dob"/>
+                            <input type="hidden" id="dtp_input2" value="" name="dob" />
                             <br/>
                         </div>
                     </div>
@@ -204,7 +202,7 @@ $('#frmRegister').validate({
                         <!-- Nhập lại mật khẩu -->
                         <label class="control-label col-sm-4" for="nhapLaiMatKhau">Nhập lại mật khẩu*:</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="txtcPWD" name="cPWD"placeholder="Nhập lại mật khẩu">
+                            <input type="password" class="form-control" id="txtcPWD" name="cPWD" placeholder="Nhập lại mật khẩu">
                         </div>
                     </div>
                     <div class="form-group">
@@ -219,37 +217,35 @@ $('#frmRegister').validate({
                     </div>
                     <div class="form-group">
                         <dir class="col-sm-offset-4 col-sm-8">
-                            <div class="g-recaptcha" data-sitekey="6LfSJyMUAAAAAMV3e5E87XtAdptnrMg_aVn68n0L" data-callback="recaptchaCallback"></div>                        
-                                <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">            
+                            <div class="g-recaptcha" data-sitekey="6LfSJyMUAAAAAMV3e5E87XtAdptnrMg_aVn68n0L" data-callback="recaptchaCallback"></div>
+                            <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
                         </dir>
                     </div>
-                
-            </div>
-            <div class="col-sm-4">
-                <!-- Facebook, google -->
-                <div class="inner" style="border-left: 1px dotted; height: 450px;">
-                    <div style=" padding-left: 30px; padding-top: 200px">
-                        <a class="btn btn-block btn-social btn-facebook">
-                            <span class="fa fa-facebook"></span> Đăng ký với facebook
-                        </a>
-                    </div>
-                    <div style=" padding-left: 30px; padding-top: 10px">
-                        <a class="btn btn-block btn-social btn-google">
-                            <span class="fa fa-google"></span> Đăng ký với google
-                        </a>
+                </div>
+                <div class="col-sm-4">
+                    <!-- Facebook, google -->
+                    <div class="inner" style="border-left: 1px dotted; height: 450px;">
+                        <div style=" padding-left: 30px; padding-top: 200px">
+                            <a class="btn btn-block btn-social btn-facebook">
+                                <span class="fa fa-facebook"></span> Đăng ký với facebook
+                            </a>
+                        </div>
+                        <div style=" padding-left: 30px; padding-top: 10px">
+                            <a class="btn btn-block btn-social btn-google">
+                                <span class="fa fa-google"></span> Đăng ký với google
+                            </a>
+                        </div>
                     </div>
                 </div>
+                <!-- Facebook, google -->
             </div>
-            <!-- Facebook, google -->
-        </div>
-        <!-- panel body -->
-        <div class="panel-footer">
-            <div class="col-sm-offset-3">
-                <button type="submit" class="btn btn-success">Xác nhận</button>
-                <button type="button" class="btn btn-default">Hủy</button>
+            <!-- panel body -->
+            <div class="panel-footer">
+                <div class="col-sm-offset-3">
+                    <button type="submit" class="btn btn-success">Xác nhận</button>
+                </div>
             </div>
-        </div>
         </form>
-                <!-- form -->
+        <!-- form -->
     </div>
 </div>

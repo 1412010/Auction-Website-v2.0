@@ -176,52 +176,6 @@ exports.updateDatGiaHienTai = function(idsanpham, entity) {
     return deferred.promise;
 }
 
-exports.loadProductSelling = function(id) {
-    var deferred = Q.defer();
-
-    var currentdate = new Date(); 
-    var datetime = + currentdate.getFullYear() + "-"
-                + (currentdate.getMonth() + 1) + "-"
-                + currentdate.getDate() + " "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-
-    var sql = 'select * from (select * from sanpham sp, taikhoan tk where sp.manguoiban = ' + id + ' and sp.manguoiban = id and not exists (select * from tragia where sanpham = sp.madaugia and gia = sp.giamuangay) and tgketthuc > "' + datetime + '") as ttsp left join (select id, ten as tennguoigiugia from taikhoan) as nb on ttsp.manguoibanzz = nb.id';
-    db.load(sql).then(function(rows) {
-        if (rows) {
-            deferred.resolve(rows);
-        } else {
-            deferred.resolve(null);
-        }
-    });
-
-    return deferred.promise;
-}
-
-exports.loadProductSold = function(id) {
-    var deferred = Q.defer();
-
-    var currentdate = new Date(); 
-    var datetime = + currentdate.getFullYear() + "-"
-                + (currentdate.getMonth() + 1) + "-"
-                + currentdate.getDate() + " "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-
-    var sql = 'select * from sanpham sp, taikhoan tk where sp.manguoiban = ' + id + ' and sp.manguoiban = id and ((exists (select * from tragia where sanpham = sp.madaugia and gia = sp.giamuangay) or (exists (select * from tragia where sanpham = sp.madaugia) and tgketthuc < "' + datetime + '")))';
-    db.load(sql).then(function(rows) {
-        if (rows) {
-            deferred.resolve(rows);
-        } else {
-            deferred.resolve(null);
-        }
-    });
-
-    return deferred.promise;
-}
-
 exports.loadBidLogById = function(id) {
     var deferred = Q.defer();
     var sql = 'select * from taikhoan, tragia where sanpham = '+ id + ' and id = nguoitragia order by thoigiantra desc';
@@ -263,7 +217,7 @@ exports.loadHetHan = function(id) {
 
     var sql = 'select * from sanpham where madaugia = '+ id + ' and tgketthuc < "' + datetime + '"';
     db.load(sql).then(function(rows) {
-        if (rows) {
+        if (rows.length > 0) {
             deferred.resolve(rows);
         } else {
             deferred.resolve(null);
@@ -325,7 +279,7 @@ exports.deleteTraGia = function(tk, sp) {
     return deferred.promise;
 }
 
-exports.updateNguoiGiuGia = function(tk, sp, gia) {
+exports.updateNguoiGiuGia = function(tk, zsp, gia) {
     var deferred = Q.defer();
 
     var sql = 'update sanpham set giahientai = ' + gia + ', nguoigiugia = ' + tk + ' where madaugia = ' + idsanpham;
@@ -336,11 +290,11 @@ exports.updateNguoiGiuGia = function(tk, sp, gia) {
     return deferred.promise;
 }
 
-exports.loadTraGia = function(tk, sp) {
+exports.loadTraGia = function(sp) {
     var deferred = Q.defer();
-    var sql = 'select * from tragia where sanpham = '+ sp + ' and nguoitragia = ' + tk + ' order by gia desc';
+    var sql = 'select * from tragia where sanpham = '+ sp + ' order by gia desc';
     db.load(sql).then(function(rows) {
-        if (rows) {
+        if (rows.length > 0) {
             deferred.resolve(rows[0]);
         } else {
             deferred.resolve(null);

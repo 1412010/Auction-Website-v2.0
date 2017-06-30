@@ -140,7 +140,8 @@ productRoute.get('/bid/:id', function(req, res) {
                 if ((cong !== 0 || tru !== 0) && (cong / (cong + tru) <= 0.8)) {
                     res.render('product/cannotbid', {
                         layoutModels: res.locals.layoutModels,
-                        lydo:" Điểm cộng thấp hơn 80%."
+                        lydo:" Điểm cộng thấp hơn 80%.",
+						idsp: req.params.id
                     });
                 } else {
                     product.loadCamDauGia(req.session.account.id, req.params.id)
@@ -148,7 +149,8 @@ productRoute.get('/bid/:id', function(req, res) {
                         if (row.length > 0) {
                             res.render('product/cannotbid', {
                                 layoutModels: res.locals.layoutModels,
-                                lydo: 'Bị cấm bởi người bán sản phẩm.'
+                                lydo: 'Bị cấm bởi người bán sản phẩm.',
+								idsp: req.params.id
                             });
                         }
                         else {
@@ -157,7 +159,8 @@ productRoute.get('/bid/:id', function(req, res) {
                                 if (row.length > 0) {
                                     res.render('product/cannotbid', {
                                         layoutModels: res.locals.layoutModels,
-                                        lydo: 'Phiên đấu giá đã kết thúc.'
+                                        lydo: 'Phiên đấu giá đã kết thúc.',
+										idsp: req.params.id
                                     });
                                 } else {
                                     product.loadProductbyId(req.params.id)

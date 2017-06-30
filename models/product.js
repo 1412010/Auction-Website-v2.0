@@ -15,6 +15,17 @@ exports.newProduct = function(entity) {
     return deferred.promise;
  }
  
+exports.updateProduct = function(entity) {
+    var deferred = Q.defer();
+
+    var sql = mustache.render('UPDATE sanpham set thongtin = "{{{thongtin}}}" where madaugia={{id}}', entity);
+
+    db.update(sql).then(function(changedRows) {
+        deferred.resolve(changedRows);
+    });
+
+    return deferred.promise;
+}
 
 exports.loadPageByCat = function(id, limit, offset) {
 

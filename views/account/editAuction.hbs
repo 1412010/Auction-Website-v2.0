@@ -69,27 +69,11 @@
         startDate: "2013-02-14 10:00",
         minuteStep: 5
     });
-
-    function recaptchaCallback() {
-        $('#hiddenRecaptcha').valid();
-    };
-    $(document).on('ready', function() {
-        $('#input-42').fileinput({
-            maxFileCount: 2,
-            allowedFileExtensions: ["jpg", "gif", "png", "txt"]
-        });
-    });
-    $(document).ready(function() {
-        $('#input-44').fileinput({
-            uploadUrl: '/file-upload-batch/2',
-            maxFilePreviewSize: 10240
-        });
-    });
     </script>
 {{/section}}
 {{> accountPanel this}}
 <div class="col-md-9">
-    <form class="form-horizontal" method="get" action="/account/edit" id="formInfo" enctype="multipart/form-data">
+    <form class="form-horizontal" method="post" action="/account/editAuction/{{row.madaugia}}" id="formInfo">
         <div class="panel panel-default" style="border-color: #189eff;">
             <div class="panel-heading" style="background-color: #189eff; color:#fff">
                 Đăng bán sản phẩm mới
@@ -101,11 +85,10 @@
                         {{#if isSucceeded}}
                             <div class="alert alert-success alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <strong>Hoàn tất!</strong> Sản phẩm đã được đăng bán thành công.
+                                <strong>Hoàn tất!</strong> Sản phẩm đã được cập nhật thành công
                             </div>
-                        {{/if}}
-                        <input type="hidden" name="madaugia" value="{{madaugia}}">
-                        
+                        {{else}}
+                        <input type="hidden" name="madaugia" value="{{row.madaugia}}">                        
                         <div class="form-group">
                             <!-- Mô tả chi tiết -->
                             <label class="control-label col-sm-2" for="motachitiet">Mô tả chi tiết</label>
@@ -115,23 +98,6 @@
                                 </textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <!-- Tự động gia hạn -->
-                            <label class="control-label col-sm-2" for="mota">Tự động gia hạn</label>
-                            <div class="col-sm-10">
-                                <label class="radio-inline">
-                                    <input type="radio" name="tudonggiahan" id="yes" value="1" disabled>Có
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="tudonggiahan" checked id="no" value="0" disabled>Không
-                                </label>
-                            </div>
-                        </div>
-                         {{#if isSucceeded}}
-                            <div class="alert alert-success alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <strong>Hoàn tất!</strong> Sản phẩm đã được đăng bán thành công.
-                            </div>
                         {{/if}}
                     </div>
                 </div>
@@ -146,8 +112,7 @@
                 <div class="panel-body">
                     <!-- panel body -->
                     <div class="col-sm-12">
-                        <h3>Tài khoản này chưa được cấp hoặc đã hết hạn quyền được bán.</span></h3>
-                        <h3><a href="/account/newPermit">Xin phép được bán tại đây.</a></h3>
+                        <h3>Bạn không có quyền được sửa thông tin sản phẩm này.</span></h3>
                     </div>
                 </div>
             {{/if}}

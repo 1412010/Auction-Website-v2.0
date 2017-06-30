@@ -69,4 +69,20 @@ searchRoute.get('', function(req, res) {
     });
 });
 
+searchRoute.get('', function(req, res) {
+	if (req.session.isLogged === true) {
+        product.insertTheoDoi(req.session.account.id, req.params.id)
+        .then(function() {
+            res.redirect('/search');
+        });
+
+    } else {
+        res.render('account/login', {
+            layoutModels: res.locals.layoutModels,
+            showError: false,
+            errorMsg: ''
+        });
+    }
+});
+
 module.exports = searchRoute;
